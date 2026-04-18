@@ -3,16 +3,18 @@ package server
 import (
 	"fmt"
 	"log"
+	"math"
 	"time"
 
-	influxdb "github.com/influxdata/influxdb-client-go/v2"
-	api "github.com/influxdata/influxdb-client-go/v2/api"
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	influxlog "github.com/influxdata/influxdb-client-go/v2/log"
 )
 
 // Influx is an InfluxDB v2 publisher
 type Influx struct {
-	client      influxdb.Client
-	writer      api.WriteAPI
+	client      influxdb2.Client
+	org         string
+	database    string
 	measurement string
 }
 
@@ -31,44 +33,48 @@ func NewInfluxClient(
 		token = fmt.Sprintf("%s:%s", user, password)
 	}
 
-	client := influxdb.NewClient(url, token)
+	options := influxdb2.DefaultOptions().
+		SetPrecision(time.Second).
+		SetMaxRetries(math.MaxInt).      // retry indefinitely while DB is unavailable
+		SetMaxRetryTime(math.MaxUint32). // no overall retry timeout (ms)
+		SetMaxRetryInterval(60_000).     // cap individual backoff at 60 s
+		SetRetryBufferLimit(100_000)     // buffer up to 100 000 unsent points
 
-	if database == "" {
-		log.Fatal("influx: missing database")
-	}
-	if measurement == "" {
-		log.Fatal("influx: missing measurement")
-	}
+	client := influxdb2.NewClientWithOptions(url, token, options)
+
+	// suppress default influx client logger; errors surface via writer.Errors()
+	influxlog.Log = nil
 
 	return &Influx{
 		client:      client,
+		org:         org,
+		database:    database,
 		measurement: measurement,
-		writer:      client.WriteAPI(org, database),
 	}
 }
 
 // Run Influx publisher
 func (m *Influx) Run(in <-chan QuerySnip) {
-	// log errors
+	writer := m.client.WriteAPI(m.org, m.database)
+
+	// log async write errors
 	go func() {
-		for err := range m.writer.Errors() {
-			log.Printf("influxdb error: %v", err)
+		for err := range writer.Errors() {
+			log.Printf("influx: write error: %v", err)
 		}
 	}()
 
 	for snip := range in {
-		tags := map[string]string{
-			"device": snip.Device,
-			"type":   snip.Measurement.String(),
-		}
-
-		fields := map[string]interface{}{
-			"value": snip.Value,
-		}
-
-		// write asynchronously
-		p := influxdb.NewPoint(m.measurement, tags, fields, time.Now())
-		m.writer.WritePoint(p)
+		p := influxdb2.NewPoint(
+			m.measurement,
+			map[string]string{
+				"device": snip.Device,
+				"type":   snip.Measurement.String(),
+			},
+			map[string]interface{}{"value": snip.Value},
+			snip.Timestamp,
+		)
+		writer.WritePoint(p)
 	}
 
 	m.client.Close()
