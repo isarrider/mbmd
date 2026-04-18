@@ -18,6 +18,12 @@ influx:
   measurement: mbmd
   user:
   password:
+  # 0 = retry indefinitely while DB is unavailable (recommended)
+  max-retries: 0
+  # max number of points to keep in memory while DB is unavailable
+  retry-buffer-limit: 100000
+  # max backoff interval between retries in milliseconds
+  max-retry-interval: 60000
 
 # influxdb_v2 config
 influx:
@@ -26,6 +32,12 @@ influx:
   measurement: mbmd
   organization:
   token:
+  # 0 = retry indefinitely while DB is unavailable (recommended)
+  max-retries: 0
+  # max number of points to keep in memory while DB is unavailable
+  retry-buffer-limit: 100000
+  # max backoff interval between retries in milliseconds
+  max-retry-interval: 60000
 
 # adapters are referenced by device
 adapters:
