@@ -156,6 +156,21 @@ any type is considered valid.
 		"",
 		"InfluxDB password (optional)",
 	)
+	runCmd.PersistentFlags().Int(
+		"influx-max-retries",
+		0,
+		"InfluxDB max write retry attempts. 0 means retry indefinitely.",
+	)
+	runCmd.PersistentFlags().Uint(
+		"influx-retry-buffer-limit",
+		100_000,
+		"InfluxDB max number of points to buffer for retry while DB is unavailable.",
+	)
+	runCmd.PersistentFlags().Uint(
+		"influx-max-retry-interval",
+		60_000,
+		"InfluxDB max retry backoff interval in milliseconds.",
+	)
 
 	pflags := runCmd.PersistentFlags()
 
@@ -166,7 +181,7 @@ any type is considered valid.
 	bindPFlagsWithPrefix(pflags, "mqtt", "broker", "topic", "user", "password", "clientid", "qos", "homie")
 
 	// influx
-	bindPFlagsWithPrefix(pflags, "influx", "url", "database", "measurement", "organization", "token", "user", "password")
+	bindPFlagsWithPrefix(pflags, "influx", "url", "database", "measurement", "organization", "token", "user", "password", "max-retries", "retry-buffer-limit", "max-retry-interval")
 }
 
 // checkVersion validates if updates are available
