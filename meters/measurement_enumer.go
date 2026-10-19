@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-const _MeasurementName = "FrequencyFrequencyL1FrequencyL2FrequencyL3CurrentCurrentL1CurrentL2CurrentL3VoltageVoltageL1VoltageL2VoltageL3VoltageL1_L2VoltageL2_L3VoltageL3_L1VoltageL_N_avgVoltageL_L_avgPowerPowerL1PowerL2PowerL3ImportPowerImportPowerL1ImportPowerL2ImportPowerL3ExportPowerExportPowerL1ExportPowerL2ExportPowerL3ReactivePowerReactivePowerL1ReactivePowerL2ReactivePowerL3ApparentPowerApparentPowerL1ApparentPowerL2ApparentPowerL3CosphiCosphiL1CosphiL2CosphiL3THDTHDL1THDL2THDL3ThreePhase_Vec_ASumSumT1SumT2SumL1SumL2SumL3ImportImportT1ImportT2ImportL1ImportL2ImportL3ExportExportT1ExportT2ExportL1ExportL2ExportL3ReactiveSumReactiveSumT1ReactiveSumT2ReactiveSumL1ReactiveSumL2ReactiveSumL3ReactiveImportReactiveImportT1ReactiveImportT2ReactiveImportL1ReactiveImportL2ReactiveImportL3ReactiveExportReactiveExportT1ReactiveExportT2ReactiveExportL1ReactiveExportL2ReactiveExportL3DCCurrentDCVoltageDCPowerHeatSinkTempDCCurrentS1DCVoltageS1DCPowerS1DCEnergyS1DCCurrentS2DCVoltageS2DCPowerS2DCEnergyS2DCCurrentS3DCVoltageS3DCPowerS3DCEnergyS3DCCurrentS4DCVoltageS4DCPowerS4DCEnergyS4ChargeStateBatteryVoltagePhaseAngle"
+const _MeasurementName = "FrequencyFrequencyL1FrequencyL2FrequencyL3CurrentCurrentL1CurrentL2CurrentL3CurrentNVoltageVoltageL1VoltageL2VoltageL3VoltageL1_L2VoltageL2_L3VoltageL3_L1VoltageL_N_avgVoltageL_L_avgPowerPowerL1PowerL2PowerL3ImportPowerImportPowerL1ImportPowerL2ImportPowerL3ExportPowerExportPowerL1ExportPowerL2ExportPowerL3ReactivePowerReactivePowerL1ReactivePowerL2ReactivePowerL3ApparentPowerApparentPowerL1ApparentPowerL2ApparentPowerL3CosphiCosphiL1CosphiL2CosphiL3THDTHDL1THDL2THDL3ThreePhase_Vec_ASumSumT1SumT2SumL1SumL2SumL3ImportImportT1ImportT2ImportL1ImportL2ImportL3ExportExportT1ExportT2ExportL1ExportL2ExportL3ReactiveSumReactiveSumT1ReactiveSumT2ReactiveSumL1ReactiveSumL2ReactiveSumL3ReactiveImportReactiveImportT1ReactiveImportT2ReactiveImportL1ReactiveImportL2ReactiveImportL3ReactiveExportReactiveExportT1ReactiveExportT2ReactiveExportL1ReactiveExportL2ReactiveExportL3DCCurrentDCVoltageDCPowerHeatSinkTempDCCurrentS1DCVoltageS1DCPowerS1DCEnergyS1DCCurrentS2DCVoltageS2DCPowerS2DCEnergyS2DCCurrentS3DCVoltageS3DCPowerS3DCEnergyS3DCCurrentS4DCVoltageS4DCPowerS4DCEnergyS4ChargeStateBatteryVoltagePhaseAngle"
 
-var _MeasurementIndex = [...]uint16{0, 9, 20, 31, 42, 49, 58, 67, 76, 83, 92, 101, 110, 122, 134, 146, 160, 174, 179, 186, 193, 200, 211, 224, 237, 250, 261, 274, 287, 300, 313, 328, 343, 358, 371, 386, 401, 416, 422, 430, 438, 446, 449, 454, 459, 464, 480, 483, 488, 493, 498, 503, 508, 514, 522, 530, 538, 546, 554, 560, 568, 576, 584, 592, 600, 611, 624, 637, 650, 663, 676, 690, 706, 722, 738, 754, 770, 784, 800, 816, 832, 848, 864, 873, 882, 889, 901, 912, 923, 932, 942, 953, 964, 973, 983, 994, 1005, 1014, 1024, 1035, 1046, 1055, 1065, 1076, 1090, 1100}
+var _MeasurementIndex = [...]uint16{0, 9, 20, 31, 42, 49, 58, 67, 76, 84, 91, 100, 109, 118, 130, 142, 154, 168, 182, 187, 194, 201, 208, 219, 232, 245, 258, 269, 282, 295, 308, 321, 336, 351, 366, 379, 394, 409, 424, 430, 438, 446, 454, 457, 462, 467, 472, 488, 491, 496, 501, 506, 511, 516, 522, 530, 538, 546, 554, 562, 568, 576, 584, 592, 600, 608, 619, 632, 645, 658, 671, 684, 698, 714, 730, 746, 762, 778, 792, 808, 824, 840, 856, 872, 881, 890, 897, 909, 920, 931, 940, 950, 961, 972, 981, 991, 1002, 1013, 1022, 1032, 1043, 1054, 1063, 1073, 1084, 1098, 1108}
 
-const _MeasurementLowerName = "frequencyfrequencyl1frequencyl2frequencyl3currentcurrentl1currentl2currentl3voltagevoltagel1voltagel2voltagel3voltagel1_l2voltagel2_l3voltagel3_l1voltagel_n_avgvoltagel_l_avgpowerpowerl1powerl2powerl3importpowerimportpowerl1importpowerl2importpowerl3exportpowerexportpowerl1exportpowerl2exportpowerl3reactivepowerreactivepowerl1reactivepowerl2reactivepowerl3apparentpowerapparentpowerl1apparentpowerl2apparentpowerl3cosphicosphil1cosphil2cosphil3thdthdl1thdl2thdl3threephase_vec_asumsumt1sumt2suml1suml2suml3importimportt1importt2importl1importl2importl3exportexportt1exportt2exportl1exportl2exportl3reactivesumreactivesumt1reactivesumt2reactivesuml1reactivesuml2reactivesuml3reactiveimportreactiveimportt1reactiveimportt2reactiveimportl1reactiveimportl2reactiveimportl3reactiveexportreactiveexportt1reactiveexportt2reactiveexportl1reactiveexportl2reactiveexportl3dccurrentdcvoltagedcpowerheatsinktempdccurrents1dcvoltages1dcpowers1dcenergys1dccurrents2dcvoltages2dcpowers2dcenergys2dccurrents3dcvoltages3dcpowers3dcenergys3dccurrents4dcvoltages4dcpowers4dcenergys4chargestatebatteryvoltagephaseangle"
+const _MeasurementLowerName = "frequencyfrequencyl1frequencyl2frequencyl3currentcurrentl1currentl2currentl3currentnvoltagevoltagel1voltagel2voltagel3voltagel1_l2voltagel2_l3voltagel3_l1voltagel_n_avgvoltagel_l_avgpowerpowerl1powerl2powerl3importpowerimportpowerl1importpowerl2importpowerl3exportpowerexportpowerl1exportpowerl2exportpowerl3reactivepowerreactivepowerl1reactivepowerl2reactivepowerl3apparentpowerapparentpowerl1apparentpowerl2apparentpowerl3cosphicosphil1cosphil2cosphil3thdthdl1thdl2thdl3threephase_vec_asumsumt1sumt2suml1suml2suml3importimportt1importt2importl1importl2importl3exportexportt1exportt2exportl1exportl2exportl3reactivesumreactivesumt1reactivesumt2reactivesuml1reactivesuml2reactivesuml3reactiveimportreactiveimportt1reactiveimportt2reactiveimportl1reactiveimportl2reactiveimportl3reactiveexportreactiveexportt1reactiveexportt2reactiveexportl1reactiveexportl2reactiveexportl3dccurrentdcvoltagedcpowerheatsinktempdccurrents1dcvoltages1dcpowers1dcenergys1dccurrents2dcvoltages2dcpowers2dcenergys2dccurrents3dcvoltages3dcpowers3dcenergys3dccurrents4dcvoltages4dcpowers4dcenergys4chargestatebatteryvoltagephaseangle"
 
 func (i Measurement) String() string {
 	i -= 1
@@ -33,106 +33,107 @@ func _MeasurementNoOp() {
 	_ = x[CurrentL1-(6)]
 	_ = x[CurrentL2-(7)]
 	_ = x[CurrentL3-(8)]
-	_ = x[Voltage-(9)]
-	_ = x[VoltageL1-(10)]
-	_ = x[VoltageL2-(11)]
-	_ = x[VoltageL3-(12)]
-	_ = x[VoltageL1_L2-(13)]
-	_ = x[VoltageL2_L3-(14)]
-	_ = x[VoltageL3_L1-(15)]
-	_ = x[VoltageL_N_avg-(16)]
-	_ = x[VoltageL_L_avg-(17)]
-	_ = x[Power-(18)]
-	_ = x[PowerL1-(19)]
-	_ = x[PowerL2-(20)]
-	_ = x[PowerL3-(21)]
-	_ = x[ImportPower-(22)]
-	_ = x[ImportPowerL1-(23)]
-	_ = x[ImportPowerL2-(24)]
-	_ = x[ImportPowerL3-(25)]
-	_ = x[ExportPower-(26)]
-	_ = x[ExportPowerL1-(27)]
-	_ = x[ExportPowerL2-(28)]
-	_ = x[ExportPowerL3-(29)]
-	_ = x[ReactivePower-(30)]
-	_ = x[ReactivePowerL1-(31)]
-	_ = x[ReactivePowerL2-(32)]
-	_ = x[ReactivePowerL3-(33)]
-	_ = x[ApparentPower-(34)]
-	_ = x[ApparentPowerL1-(35)]
-	_ = x[ApparentPowerL2-(36)]
-	_ = x[ApparentPowerL3-(37)]
-	_ = x[Cosphi-(38)]
-	_ = x[CosphiL1-(39)]
-	_ = x[CosphiL2-(40)]
-	_ = x[CosphiL3-(41)]
-	_ = x[THD-(42)]
-	_ = x[THDL1-(43)]
-	_ = x[THDL2-(44)]
-	_ = x[THDL3-(45)]
-	_ = x[ThreePhase_Vec_A-(46)]
-	_ = x[Sum-(47)]
-	_ = x[SumT1-(48)]
-	_ = x[SumT2-(49)]
-	_ = x[SumL1-(50)]
-	_ = x[SumL2-(51)]
-	_ = x[SumL3-(52)]
-	_ = x[Import-(53)]
-	_ = x[ImportT1-(54)]
-	_ = x[ImportT2-(55)]
-	_ = x[ImportL1-(56)]
-	_ = x[ImportL2-(57)]
-	_ = x[ImportL3-(58)]
-	_ = x[Export-(59)]
-	_ = x[ExportT1-(60)]
-	_ = x[ExportT2-(61)]
-	_ = x[ExportL1-(62)]
-	_ = x[ExportL2-(63)]
-	_ = x[ExportL3-(64)]
-	_ = x[ReactiveSum-(65)]
-	_ = x[ReactiveSumT1-(66)]
-	_ = x[ReactiveSumT2-(67)]
-	_ = x[ReactiveSumL1-(68)]
-	_ = x[ReactiveSumL2-(69)]
-	_ = x[ReactiveSumL3-(70)]
-	_ = x[ReactiveImport-(71)]
-	_ = x[ReactiveImportT1-(72)]
-	_ = x[ReactiveImportT2-(73)]
-	_ = x[ReactiveImportL1-(74)]
-	_ = x[ReactiveImportL2-(75)]
-	_ = x[ReactiveImportL3-(76)]
-	_ = x[ReactiveExport-(77)]
-	_ = x[ReactiveExportT1-(78)]
-	_ = x[ReactiveExportT2-(79)]
-	_ = x[ReactiveExportL1-(80)]
-	_ = x[ReactiveExportL2-(81)]
-	_ = x[ReactiveExportL3-(82)]
-	_ = x[DCCurrent-(83)]
-	_ = x[DCVoltage-(84)]
-	_ = x[DCPower-(85)]
-	_ = x[HeatSinkTemp-(86)]
-	_ = x[DCCurrentS1-(87)]
-	_ = x[DCVoltageS1-(88)]
-	_ = x[DCPowerS1-(89)]
-	_ = x[DCEnergyS1-(90)]
-	_ = x[DCCurrentS2-(91)]
-	_ = x[DCVoltageS2-(92)]
-	_ = x[DCPowerS2-(93)]
-	_ = x[DCEnergyS2-(94)]
-	_ = x[DCCurrentS3-(95)]
-	_ = x[DCVoltageS3-(96)]
-	_ = x[DCPowerS3-(97)]
-	_ = x[DCEnergyS3-(98)]
-	_ = x[DCCurrentS4-(99)]
-	_ = x[DCVoltageS4-(100)]
-	_ = x[DCPowerS4-(101)]
-	_ = x[DCEnergyS4-(102)]
-	_ = x[ChargeState-(103)]
-	_ = x[BatteryVoltage-(104)]
-	_ = x[PhaseAngle-(105)]
+	_ = x[CurrentN-(9)]
+	_ = x[Voltage-(10)]
+	_ = x[VoltageL1-(11)]
+	_ = x[VoltageL2-(12)]
+	_ = x[VoltageL3-(13)]
+	_ = x[VoltageL1_L2-(14)]
+	_ = x[VoltageL2_L3-(15)]
+	_ = x[VoltageL3_L1-(16)]
+	_ = x[VoltageL_N_avg-(17)]
+	_ = x[VoltageL_L_avg-(18)]
+	_ = x[Power-(19)]
+	_ = x[PowerL1-(20)]
+	_ = x[PowerL2-(21)]
+	_ = x[PowerL3-(22)]
+	_ = x[ImportPower-(23)]
+	_ = x[ImportPowerL1-(24)]
+	_ = x[ImportPowerL2-(25)]
+	_ = x[ImportPowerL3-(26)]
+	_ = x[ExportPower-(27)]
+	_ = x[ExportPowerL1-(28)]
+	_ = x[ExportPowerL2-(29)]
+	_ = x[ExportPowerL3-(30)]
+	_ = x[ReactivePower-(31)]
+	_ = x[ReactivePowerL1-(32)]
+	_ = x[ReactivePowerL2-(33)]
+	_ = x[ReactivePowerL3-(34)]
+	_ = x[ApparentPower-(35)]
+	_ = x[ApparentPowerL1-(36)]
+	_ = x[ApparentPowerL2-(37)]
+	_ = x[ApparentPowerL3-(38)]
+	_ = x[Cosphi-(39)]
+	_ = x[CosphiL1-(40)]
+	_ = x[CosphiL2-(41)]
+	_ = x[CosphiL3-(42)]
+	_ = x[THD-(43)]
+	_ = x[THDL1-(44)]
+	_ = x[THDL2-(45)]
+	_ = x[THDL3-(46)]
+	_ = x[ThreePhase_Vec_A-(47)]
+	_ = x[Sum-(48)]
+	_ = x[SumT1-(49)]
+	_ = x[SumT2-(50)]
+	_ = x[SumL1-(51)]
+	_ = x[SumL2-(52)]
+	_ = x[SumL3-(53)]
+	_ = x[Import-(54)]
+	_ = x[ImportT1-(55)]
+	_ = x[ImportT2-(56)]
+	_ = x[ImportL1-(57)]
+	_ = x[ImportL2-(58)]
+	_ = x[ImportL3-(59)]
+	_ = x[Export-(60)]
+	_ = x[ExportT1-(61)]
+	_ = x[ExportT2-(62)]
+	_ = x[ExportL1-(63)]
+	_ = x[ExportL2-(64)]
+	_ = x[ExportL3-(65)]
+	_ = x[ReactiveSum-(66)]
+	_ = x[ReactiveSumT1-(67)]
+	_ = x[ReactiveSumT2-(68)]
+	_ = x[ReactiveSumL1-(69)]
+	_ = x[ReactiveSumL2-(70)]
+	_ = x[ReactiveSumL3-(71)]
+	_ = x[ReactiveImport-(72)]
+	_ = x[ReactiveImportT1-(73)]
+	_ = x[ReactiveImportT2-(74)]
+	_ = x[ReactiveImportL1-(75)]
+	_ = x[ReactiveImportL2-(76)]
+	_ = x[ReactiveImportL3-(77)]
+	_ = x[ReactiveExport-(78)]
+	_ = x[ReactiveExportT1-(79)]
+	_ = x[ReactiveExportT2-(80)]
+	_ = x[ReactiveExportL1-(81)]
+	_ = x[ReactiveExportL2-(82)]
+	_ = x[ReactiveExportL3-(83)]
+	_ = x[DCCurrent-(84)]
+	_ = x[DCVoltage-(85)]
+	_ = x[DCPower-(86)]
+	_ = x[HeatSinkTemp-(87)]
+	_ = x[DCCurrentS1-(88)]
+	_ = x[DCVoltageS1-(89)]
+	_ = x[DCPowerS1-(90)]
+	_ = x[DCEnergyS1-(91)]
+	_ = x[DCCurrentS2-(92)]
+	_ = x[DCVoltageS2-(93)]
+	_ = x[DCPowerS2-(94)]
+	_ = x[DCEnergyS2-(95)]
+	_ = x[DCCurrentS3-(96)]
+	_ = x[DCVoltageS3-(97)]
+	_ = x[DCPowerS3-(98)]
+	_ = x[DCEnergyS3-(99)]
+	_ = x[DCCurrentS4-(100)]
+	_ = x[DCVoltageS4-(101)]
+	_ = x[DCPowerS4-(102)]
+	_ = x[DCEnergyS4-(103)]
+	_ = x[ChargeState-(104)]
+	_ = x[BatteryVoltage-(105)]
+	_ = x[PhaseAngle-(106)]
 }
 
-var _MeasurementValues = []Measurement{Frequency, FrequencyL1, FrequencyL2, FrequencyL3, Current, CurrentL1, CurrentL2, CurrentL3, Voltage, VoltageL1, VoltageL2, VoltageL3, VoltageL1_L2, VoltageL2_L3, VoltageL3_L1, VoltageL_N_avg, VoltageL_L_avg, Power, PowerL1, PowerL2, PowerL3, ImportPower, ImportPowerL1, ImportPowerL2, ImportPowerL3, ExportPower, ExportPowerL1, ExportPowerL2, ExportPowerL3, ReactivePower, ReactivePowerL1, ReactivePowerL2, ReactivePowerL3, ApparentPower, ApparentPowerL1, ApparentPowerL2, ApparentPowerL3, Cosphi, CosphiL1, CosphiL2, CosphiL3, THD, THDL1, THDL2, THDL3, ThreePhase_Vec_A, Sum, SumT1, SumT2, SumL1, SumL2, SumL3, Import, ImportT1, ImportT2, ImportL1, ImportL2, ImportL3, Export, ExportT1, ExportT2, ExportL1, ExportL2, ExportL3, ReactiveSum, ReactiveSumT1, ReactiveSumT2, ReactiveSumL1, ReactiveSumL2, ReactiveSumL3, ReactiveImport, ReactiveImportT1, ReactiveImportT2, ReactiveImportL1, ReactiveImportL2, ReactiveImportL3, ReactiveExport, ReactiveExportT1, ReactiveExportT2, ReactiveExportL1, ReactiveExportL2, ReactiveExportL3, DCCurrent, DCVoltage, DCPower, HeatSinkTemp, DCCurrentS1, DCVoltageS1, DCPowerS1, DCEnergyS1, DCCurrentS2, DCVoltageS2, DCPowerS2, DCEnergyS2, DCCurrentS3, DCVoltageS3, DCPowerS3, DCEnergyS3, DCCurrentS4, DCVoltageS4, DCPowerS4, DCEnergyS4, ChargeState, BatteryVoltage, PhaseAngle}
+var _MeasurementValues = []Measurement{Frequency, FrequencyL1, FrequencyL2, FrequencyL3, Current, CurrentL1, CurrentL2, CurrentL3, CurrentN, Voltage, VoltageL1, VoltageL2, VoltageL3, VoltageL1_L2, VoltageL2_L3, VoltageL3_L1, VoltageL_N_avg, VoltageL_L_avg, Power, PowerL1, PowerL2, PowerL3, ImportPower, ImportPowerL1, ImportPowerL2, ImportPowerL3, ExportPower, ExportPowerL1, ExportPowerL2, ExportPowerL3, ReactivePower, ReactivePowerL1, ReactivePowerL2, ReactivePowerL3, ApparentPower, ApparentPowerL1, ApparentPowerL2, ApparentPowerL3, Cosphi, CosphiL1, CosphiL2, CosphiL3, THD, THDL1, THDL2, THDL3, ThreePhase_Vec_A, Sum, SumT1, SumT2, SumL1, SumL2, SumL3, Import, ImportT1, ImportT2, ImportL1, ImportL2, ImportL3, Export, ExportT1, ExportT2, ExportL1, ExportL2, ExportL3, ReactiveSum, ReactiveSumT1, ReactiveSumT2, ReactiveSumL1, ReactiveSumL2, ReactiveSumL3, ReactiveImport, ReactiveImportT1, ReactiveImportT2, ReactiveImportL1, ReactiveImportL2, ReactiveImportL3, ReactiveExport, ReactiveExportT1, ReactiveExportT2, ReactiveExportL1, ReactiveExportL2, ReactiveExportL3, DCCurrent, DCVoltage, DCPower, HeatSinkTemp, DCCurrentS1, DCVoltageS1, DCPowerS1, DCEnergyS1, DCCurrentS2, DCVoltageS2, DCPowerS2, DCEnergyS2, DCCurrentS3, DCVoltageS3, DCPowerS3, DCEnergyS3, DCCurrentS4, DCVoltageS4, DCPowerS4, DCEnergyS4, ChargeState, BatteryVoltage, PhaseAngle}
 
 var _MeasurementNameToValueMap = map[string]Measurement{
 	_MeasurementName[0:9]:            Frequency,
@@ -151,200 +152,202 @@ var _MeasurementNameToValueMap = map[string]Measurement{
 	_MeasurementLowerName[58:67]:     CurrentL2,
 	_MeasurementName[67:76]:          CurrentL3,
 	_MeasurementLowerName[67:76]:     CurrentL3,
-	_MeasurementName[76:83]:          Voltage,
-	_MeasurementLowerName[76:83]:     Voltage,
-	_MeasurementName[83:92]:          VoltageL1,
-	_MeasurementLowerName[83:92]:     VoltageL1,
-	_MeasurementName[92:101]:         VoltageL2,
-	_MeasurementLowerName[92:101]:    VoltageL2,
-	_MeasurementName[101:110]:        VoltageL3,
-	_MeasurementLowerName[101:110]:   VoltageL3,
-	_MeasurementName[110:122]:        VoltageL1_L2,
-	_MeasurementLowerName[110:122]:   VoltageL1_L2,
-	_MeasurementName[122:134]:        VoltageL2_L3,
-	_MeasurementLowerName[122:134]:   VoltageL2_L3,
-	_MeasurementName[134:146]:        VoltageL3_L1,
-	_MeasurementLowerName[134:146]:   VoltageL3_L1,
-	_MeasurementName[146:160]:        VoltageL_N_avg,
-	_MeasurementLowerName[146:160]:   VoltageL_N_avg,
-	_MeasurementName[160:174]:        VoltageL_L_avg,
-	_MeasurementLowerName[160:174]:   VoltageL_L_avg,
-	_MeasurementName[174:179]:        Power,
-	_MeasurementLowerName[174:179]:   Power,
-	_MeasurementName[179:186]:        PowerL1,
-	_MeasurementLowerName[179:186]:   PowerL1,
-	_MeasurementName[186:193]:        PowerL2,
-	_MeasurementLowerName[186:193]:   PowerL2,
-	_MeasurementName[193:200]:        PowerL3,
-	_MeasurementLowerName[193:200]:   PowerL3,
-	_MeasurementName[200:211]:        ImportPower,
-	_MeasurementLowerName[200:211]:   ImportPower,
-	_MeasurementName[211:224]:        ImportPowerL1,
-	_MeasurementLowerName[211:224]:   ImportPowerL1,
-	_MeasurementName[224:237]:        ImportPowerL2,
-	_MeasurementLowerName[224:237]:   ImportPowerL2,
-	_MeasurementName[237:250]:        ImportPowerL3,
-	_MeasurementLowerName[237:250]:   ImportPowerL3,
-	_MeasurementName[250:261]:        ExportPower,
-	_MeasurementLowerName[250:261]:   ExportPower,
-	_MeasurementName[261:274]:        ExportPowerL1,
-	_MeasurementLowerName[261:274]:   ExportPowerL1,
-	_MeasurementName[274:287]:        ExportPowerL2,
-	_MeasurementLowerName[274:287]:   ExportPowerL2,
-	_MeasurementName[287:300]:        ExportPowerL3,
-	_MeasurementLowerName[287:300]:   ExportPowerL3,
-	_MeasurementName[300:313]:        ReactivePower,
-	_MeasurementLowerName[300:313]:   ReactivePower,
-	_MeasurementName[313:328]:        ReactivePowerL1,
-	_MeasurementLowerName[313:328]:   ReactivePowerL1,
-	_MeasurementName[328:343]:        ReactivePowerL2,
-	_MeasurementLowerName[328:343]:   ReactivePowerL2,
-	_MeasurementName[343:358]:        ReactivePowerL3,
-	_MeasurementLowerName[343:358]:   ReactivePowerL3,
-	_MeasurementName[358:371]:        ApparentPower,
-	_MeasurementLowerName[358:371]:   ApparentPower,
-	_MeasurementName[371:386]:        ApparentPowerL1,
-	_MeasurementLowerName[371:386]:   ApparentPowerL1,
-	_MeasurementName[386:401]:        ApparentPowerL2,
-	_MeasurementLowerName[386:401]:   ApparentPowerL2,
-	_MeasurementName[401:416]:        ApparentPowerL3,
-	_MeasurementLowerName[401:416]:   ApparentPowerL3,
-	_MeasurementName[416:422]:        Cosphi,
-	_MeasurementLowerName[416:422]:   Cosphi,
-	_MeasurementName[422:430]:        CosphiL1,
-	_MeasurementLowerName[422:430]:   CosphiL1,
-	_MeasurementName[430:438]:        CosphiL2,
-	_MeasurementLowerName[430:438]:   CosphiL2,
-	_MeasurementName[438:446]:        CosphiL3,
-	_MeasurementLowerName[438:446]:   CosphiL3,
-	_MeasurementName[446:449]:        THD,
-	_MeasurementLowerName[446:449]:   THD,
-	_MeasurementName[449:454]:        THDL1,
-	_MeasurementLowerName[449:454]:   THDL1,
-	_MeasurementName[454:459]:        THDL2,
-	_MeasurementLowerName[454:459]:   THDL2,
-	_MeasurementName[459:464]:        THDL3,
-	_MeasurementLowerName[459:464]:   THDL3,
-	_MeasurementName[464:480]:        ThreePhase_Vec_A,
-	_MeasurementLowerName[464:480]:   ThreePhase_Vec_A,
-	_MeasurementName[480:483]:        Sum,
-	_MeasurementLowerName[480:483]:   Sum,
-	_MeasurementName[483:488]:        SumT1,
-	_MeasurementLowerName[483:488]:   SumT1,
-	_MeasurementName[488:493]:        SumT2,
-	_MeasurementLowerName[488:493]:   SumT2,
-	_MeasurementName[493:498]:        SumL1,
-	_MeasurementLowerName[493:498]:   SumL1,
-	_MeasurementName[498:503]:        SumL2,
-	_MeasurementLowerName[498:503]:   SumL2,
-	_MeasurementName[503:508]:        SumL3,
-	_MeasurementLowerName[503:508]:   SumL3,
-	_MeasurementName[508:514]:        Import,
-	_MeasurementLowerName[508:514]:   Import,
-	_MeasurementName[514:522]:        ImportT1,
-	_MeasurementLowerName[514:522]:   ImportT1,
-	_MeasurementName[522:530]:        ImportT2,
-	_MeasurementLowerName[522:530]:   ImportT2,
-	_MeasurementName[530:538]:        ImportL1,
-	_MeasurementLowerName[530:538]:   ImportL1,
-	_MeasurementName[538:546]:        ImportL2,
-	_MeasurementLowerName[538:546]:   ImportL2,
-	_MeasurementName[546:554]:        ImportL3,
-	_MeasurementLowerName[546:554]:   ImportL3,
-	_MeasurementName[554:560]:        Export,
-	_MeasurementLowerName[554:560]:   Export,
-	_MeasurementName[560:568]:        ExportT1,
-	_MeasurementLowerName[560:568]:   ExportT1,
-	_MeasurementName[568:576]:        ExportT2,
-	_MeasurementLowerName[568:576]:   ExportT2,
-	_MeasurementName[576:584]:        ExportL1,
-	_MeasurementLowerName[576:584]:   ExportL1,
-	_MeasurementName[584:592]:        ExportL2,
-	_MeasurementLowerName[584:592]:   ExportL2,
-	_MeasurementName[592:600]:        ExportL3,
-	_MeasurementLowerName[592:600]:   ExportL3,
-	_MeasurementName[600:611]:        ReactiveSum,
-	_MeasurementLowerName[600:611]:   ReactiveSum,
-	_MeasurementName[611:624]:        ReactiveSumT1,
-	_MeasurementLowerName[611:624]:   ReactiveSumT1,
-	_MeasurementName[624:637]:        ReactiveSumT2,
-	_MeasurementLowerName[624:637]:   ReactiveSumT2,
-	_MeasurementName[637:650]:        ReactiveSumL1,
-	_MeasurementLowerName[637:650]:   ReactiveSumL1,
-	_MeasurementName[650:663]:        ReactiveSumL2,
-	_MeasurementLowerName[650:663]:   ReactiveSumL2,
-	_MeasurementName[663:676]:        ReactiveSumL3,
-	_MeasurementLowerName[663:676]:   ReactiveSumL3,
-	_MeasurementName[676:690]:        ReactiveImport,
-	_MeasurementLowerName[676:690]:   ReactiveImport,
-	_MeasurementName[690:706]:        ReactiveImportT1,
-	_MeasurementLowerName[690:706]:   ReactiveImportT1,
-	_MeasurementName[706:722]:        ReactiveImportT2,
-	_MeasurementLowerName[706:722]:   ReactiveImportT2,
-	_MeasurementName[722:738]:        ReactiveImportL1,
-	_MeasurementLowerName[722:738]:   ReactiveImportL1,
-	_MeasurementName[738:754]:        ReactiveImportL2,
-	_MeasurementLowerName[738:754]:   ReactiveImportL2,
-	_MeasurementName[754:770]:        ReactiveImportL3,
-	_MeasurementLowerName[754:770]:   ReactiveImportL3,
-	_MeasurementName[770:784]:        ReactiveExport,
-	_MeasurementLowerName[770:784]:   ReactiveExport,
-	_MeasurementName[784:800]:        ReactiveExportT1,
-	_MeasurementLowerName[784:800]:   ReactiveExportT1,
-	_MeasurementName[800:816]:        ReactiveExportT2,
-	_MeasurementLowerName[800:816]:   ReactiveExportT2,
-	_MeasurementName[816:832]:        ReactiveExportL1,
-	_MeasurementLowerName[816:832]:   ReactiveExportL1,
-	_MeasurementName[832:848]:        ReactiveExportL2,
-	_MeasurementLowerName[832:848]:   ReactiveExportL2,
-	_MeasurementName[848:864]:        ReactiveExportL3,
-	_MeasurementLowerName[848:864]:   ReactiveExportL3,
-	_MeasurementName[864:873]:        DCCurrent,
-	_MeasurementLowerName[864:873]:   DCCurrent,
-	_MeasurementName[873:882]:        DCVoltage,
-	_MeasurementLowerName[873:882]:   DCVoltage,
-	_MeasurementName[882:889]:        DCPower,
-	_MeasurementLowerName[882:889]:   DCPower,
-	_MeasurementName[889:901]:        HeatSinkTemp,
-	_MeasurementLowerName[889:901]:   HeatSinkTemp,
-	_MeasurementName[901:912]:        DCCurrentS1,
-	_MeasurementLowerName[901:912]:   DCCurrentS1,
-	_MeasurementName[912:923]:        DCVoltageS1,
-	_MeasurementLowerName[912:923]:   DCVoltageS1,
-	_MeasurementName[923:932]:        DCPowerS1,
-	_MeasurementLowerName[923:932]:   DCPowerS1,
-	_MeasurementName[932:942]:        DCEnergyS1,
-	_MeasurementLowerName[932:942]:   DCEnergyS1,
-	_MeasurementName[942:953]:        DCCurrentS2,
-	_MeasurementLowerName[942:953]:   DCCurrentS2,
-	_MeasurementName[953:964]:        DCVoltageS2,
-	_MeasurementLowerName[953:964]:   DCVoltageS2,
-	_MeasurementName[964:973]:        DCPowerS2,
-	_MeasurementLowerName[964:973]:   DCPowerS2,
-	_MeasurementName[973:983]:        DCEnergyS2,
-	_MeasurementLowerName[973:983]:   DCEnergyS2,
-	_MeasurementName[983:994]:        DCCurrentS3,
-	_MeasurementLowerName[983:994]:   DCCurrentS3,
-	_MeasurementName[994:1005]:       DCVoltageS3,
-	_MeasurementLowerName[994:1005]:  DCVoltageS3,
-	_MeasurementName[1005:1014]:      DCPowerS3,
-	_MeasurementLowerName[1005:1014]: DCPowerS3,
-	_MeasurementName[1014:1024]:      DCEnergyS3,
-	_MeasurementLowerName[1014:1024]: DCEnergyS3,
-	_MeasurementName[1024:1035]:      DCCurrentS4,
-	_MeasurementLowerName[1024:1035]: DCCurrentS4,
-	_MeasurementName[1035:1046]:      DCVoltageS4,
-	_MeasurementLowerName[1035:1046]: DCVoltageS4,
-	_MeasurementName[1046:1055]:      DCPowerS4,
-	_MeasurementLowerName[1046:1055]: DCPowerS4,
-	_MeasurementName[1055:1065]:      DCEnergyS4,
-	_MeasurementLowerName[1055:1065]: DCEnergyS4,
-	_MeasurementName[1065:1076]:      ChargeState,
-	_MeasurementLowerName[1065:1076]: ChargeState,
-	_MeasurementName[1076:1090]:      BatteryVoltage,
-	_MeasurementLowerName[1076:1090]: BatteryVoltage,
-	_MeasurementName[1090:1100]:      PhaseAngle,
-	_MeasurementLowerName[1090:1100]: PhaseAngle,
+	_MeasurementName[76:84]:          CurrentN,
+	_MeasurementLowerName[76:84]:     CurrentN,
+	_MeasurementName[84:91]:          Voltage,
+	_MeasurementLowerName[84:91]:     Voltage,
+	_MeasurementName[91:100]:         VoltageL1,
+	_MeasurementLowerName[91:100]:    VoltageL1,
+	_MeasurementName[100:109]:        VoltageL2,
+	_MeasurementLowerName[100:109]:   VoltageL2,
+	_MeasurementName[109:118]:        VoltageL3,
+	_MeasurementLowerName[109:118]:   VoltageL3,
+	_MeasurementName[118:130]:        VoltageL1_L2,
+	_MeasurementLowerName[118:130]:   VoltageL1_L2,
+	_MeasurementName[130:142]:        VoltageL2_L3,
+	_MeasurementLowerName[130:142]:   VoltageL2_L3,
+	_MeasurementName[142:154]:        VoltageL3_L1,
+	_MeasurementLowerName[142:154]:   VoltageL3_L1,
+	_MeasurementName[154:168]:        VoltageL_N_avg,
+	_MeasurementLowerName[154:168]:   VoltageL_N_avg,
+	_MeasurementName[168:182]:        VoltageL_L_avg,
+	_MeasurementLowerName[168:182]:   VoltageL_L_avg,
+	_MeasurementName[182:187]:        Power,
+	_MeasurementLowerName[182:187]:   Power,
+	_MeasurementName[187:194]:        PowerL1,
+	_MeasurementLowerName[187:194]:   PowerL1,
+	_MeasurementName[194:201]:        PowerL2,
+	_MeasurementLowerName[194:201]:   PowerL2,
+	_MeasurementName[201:208]:        PowerL3,
+	_MeasurementLowerName[201:208]:   PowerL3,
+	_MeasurementName[208:219]:        ImportPower,
+	_MeasurementLowerName[208:219]:   ImportPower,
+	_MeasurementName[219:232]:        ImportPowerL1,
+	_MeasurementLowerName[219:232]:   ImportPowerL1,
+	_MeasurementName[232:245]:        ImportPowerL2,
+	_MeasurementLowerName[232:245]:   ImportPowerL2,
+	_MeasurementName[245:258]:        ImportPowerL3,
+	_MeasurementLowerName[245:258]:   ImportPowerL3,
+	_MeasurementName[258:269]:        ExportPower,
+	_MeasurementLowerName[258:269]:   ExportPower,
+	_MeasurementName[269:282]:        ExportPowerL1,
+	_MeasurementLowerName[269:282]:   ExportPowerL1,
+	_MeasurementName[282:295]:        ExportPowerL2,
+	_MeasurementLowerName[282:295]:   ExportPowerL2,
+	_MeasurementName[295:308]:        ExportPowerL3,
+	_MeasurementLowerName[295:308]:   ExportPowerL3,
+	_MeasurementName[308:321]:        ReactivePower,
+	_MeasurementLowerName[308:321]:   ReactivePower,
+	_MeasurementName[321:336]:        ReactivePowerL1,
+	_MeasurementLowerName[321:336]:   ReactivePowerL1,
+	_MeasurementName[336:351]:        ReactivePowerL2,
+	_MeasurementLowerName[336:351]:   ReactivePowerL2,
+	_MeasurementName[351:366]:        ReactivePowerL3,
+	_MeasurementLowerName[351:366]:   ReactivePowerL3,
+	_MeasurementName[366:379]:        ApparentPower,
+	_MeasurementLowerName[366:379]:   ApparentPower,
+	_MeasurementName[379:394]:        ApparentPowerL1,
+	_MeasurementLowerName[379:394]:   ApparentPowerL1,
+	_MeasurementName[394:409]:        ApparentPowerL2,
+	_MeasurementLowerName[394:409]:   ApparentPowerL2,
+	_MeasurementName[409:424]:        ApparentPowerL3,
+	_MeasurementLowerName[409:424]:   ApparentPowerL3,
+	_MeasurementName[424:430]:        Cosphi,
+	_MeasurementLowerName[424:430]:   Cosphi,
+	_MeasurementName[430:438]:        CosphiL1,
+	_MeasurementLowerName[430:438]:   CosphiL1,
+	_MeasurementName[438:446]:        CosphiL2,
+	_MeasurementLowerName[438:446]:   CosphiL2,
+	_MeasurementName[446:454]:        CosphiL3,
+	_MeasurementLowerName[446:454]:   CosphiL3,
+	_MeasurementName[454:457]:        THD,
+	_MeasurementLowerName[454:457]:   THD,
+	_MeasurementName[457:462]:        THDL1,
+	_MeasurementLowerName[457:462]:   THDL1,
+	_MeasurementName[462:467]:        THDL2,
+	_MeasurementLowerName[462:467]:   THDL2,
+	_MeasurementName[467:472]:        THDL3,
+	_MeasurementLowerName[467:472]:   THDL3,
+	_MeasurementName[472:488]:        ThreePhase_Vec_A,
+	_MeasurementLowerName[472:488]:   ThreePhase_Vec_A,
+	_MeasurementName[488:491]:        Sum,
+	_MeasurementLowerName[488:491]:   Sum,
+	_MeasurementName[491:496]:        SumT1,
+	_MeasurementLowerName[491:496]:   SumT1,
+	_MeasurementName[496:501]:        SumT2,
+	_MeasurementLowerName[496:501]:   SumT2,
+	_MeasurementName[501:506]:        SumL1,
+	_MeasurementLowerName[501:506]:   SumL1,
+	_MeasurementName[506:511]:        SumL2,
+	_MeasurementLowerName[506:511]:   SumL2,
+	_MeasurementName[511:516]:        SumL3,
+	_MeasurementLowerName[511:516]:   SumL3,
+	_MeasurementName[516:522]:        Import,
+	_MeasurementLowerName[516:522]:   Import,
+	_MeasurementName[522:530]:        ImportT1,
+	_MeasurementLowerName[522:530]:   ImportT1,
+	_MeasurementName[530:538]:        ImportT2,
+	_MeasurementLowerName[530:538]:   ImportT2,
+	_MeasurementName[538:546]:        ImportL1,
+	_MeasurementLowerName[538:546]:   ImportL1,
+	_MeasurementName[546:554]:        ImportL2,
+	_MeasurementLowerName[546:554]:   ImportL2,
+	_MeasurementName[554:562]:        ImportL3,
+	_MeasurementLowerName[554:562]:   ImportL3,
+	_MeasurementName[562:568]:        Export,
+	_MeasurementLowerName[562:568]:   Export,
+	_MeasurementName[568:576]:        ExportT1,
+	_MeasurementLowerName[568:576]:   ExportT1,
+	_MeasurementName[576:584]:        ExportT2,
+	_MeasurementLowerName[576:584]:   ExportT2,
+	_MeasurementName[584:592]:        ExportL1,
+	_MeasurementLowerName[584:592]:   ExportL1,
+	_MeasurementName[592:600]:        ExportL2,
+	_MeasurementLowerName[592:600]:   ExportL2,
+	_MeasurementName[600:608]:        ExportL3,
+	_MeasurementLowerName[600:608]:   ExportL3,
+	_MeasurementName[608:619]:        ReactiveSum,
+	_MeasurementLowerName[608:619]:   ReactiveSum,
+	_MeasurementName[619:632]:        ReactiveSumT1,
+	_MeasurementLowerName[619:632]:   ReactiveSumT1,
+	_MeasurementName[632:645]:        ReactiveSumT2,
+	_MeasurementLowerName[632:645]:   ReactiveSumT2,
+	_MeasurementName[645:658]:        ReactiveSumL1,
+	_MeasurementLowerName[645:658]:   ReactiveSumL1,
+	_MeasurementName[658:671]:        ReactiveSumL2,
+	_MeasurementLowerName[658:671]:   ReactiveSumL2,
+	_MeasurementName[671:684]:        ReactiveSumL3,
+	_MeasurementLowerName[671:684]:   ReactiveSumL3,
+	_MeasurementName[684:698]:        ReactiveImport,
+	_MeasurementLowerName[684:698]:   ReactiveImport,
+	_MeasurementName[698:714]:        ReactiveImportT1,
+	_MeasurementLowerName[698:714]:   ReactiveImportT1,
+	_MeasurementName[714:730]:        ReactiveImportT2,
+	_MeasurementLowerName[714:730]:   ReactiveImportT2,
+	_MeasurementName[730:746]:        ReactiveImportL1,
+	_MeasurementLowerName[730:746]:   ReactiveImportL1,
+	_MeasurementName[746:762]:        ReactiveImportL2,
+	_MeasurementLowerName[746:762]:   ReactiveImportL2,
+	_MeasurementName[762:778]:        ReactiveImportL3,
+	_MeasurementLowerName[762:778]:   ReactiveImportL3,
+	_MeasurementName[778:792]:        ReactiveExport,
+	_MeasurementLowerName[778:792]:   ReactiveExport,
+	_MeasurementName[792:808]:        ReactiveExportT1,
+	_MeasurementLowerName[792:808]:   ReactiveExportT1,
+	_MeasurementName[808:824]:        ReactiveExportT2,
+	_MeasurementLowerName[808:824]:   ReactiveExportT2,
+	_MeasurementName[824:840]:        ReactiveExportL1,
+	_MeasurementLowerName[824:840]:   ReactiveExportL1,
+	_MeasurementName[840:856]:        ReactiveExportL2,
+	_MeasurementLowerName[840:856]:   ReactiveExportL2,
+	_MeasurementName[856:872]:        ReactiveExportL3,
+	_MeasurementLowerName[856:872]:   ReactiveExportL3,
+	_MeasurementName[872:881]:        DCCurrent,
+	_MeasurementLowerName[872:881]:   DCCurrent,
+	_MeasurementName[881:890]:        DCVoltage,
+	_MeasurementLowerName[881:890]:   DCVoltage,
+	_MeasurementName[890:897]:        DCPower,
+	_MeasurementLowerName[890:897]:   DCPower,
+	_MeasurementName[897:909]:        HeatSinkTemp,
+	_MeasurementLowerName[897:909]:   HeatSinkTemp,
+	_MeasurementName[909:920]:        DCCurrentS1,
+	_MeasurementLowerName[909:920]:   DCCurrentS1,
+	_MeasurementName[920:931]:        DCVoltageS1,
+	_MeasurementLowerName[920:931]:   DCVoltageS1,
+	_MeasurementName[931:940]:        DCPowerS1,
+	_MeasurementLowerName[931:940]:   DCPowerS1,
+	_MeasurementName[940:950]:        DCEnergyS1,
+	_MeasurementLowerName[940:950]:   DCEnergyS1,
+	_MeasurementName[950:961]:        DCCurrentS2,
+	_MeasurementLowerName[950:961]:   DCCurrentS2,
+	_MeasurementName[961:972]:        DCVoltageS2,
+	_MeasurementLowerName[961:972]:   DCVoltageS2,
+	_MeasurementName[972:981]:        DCPowerS2,
+	_MeasurementLowerName[972:981]:   DCPowerS2,
+	_MeasurementName[981:991]:        DCEnergyS2,
+	_MeasurementLowerName[981:991]:   DCEnergyS2,
+	_MeasurementName[991:1002]:       DCCurrentS3,
+	_MeasurementLowerName[991:1002]:  DCCurrentS3,
+	_MeasurementName[1002:1013]:      DCVoltageS3,
+	_MeasurementLowerName[1002:1013]: DCVoltageS3,
+	_MeasurementName[1013:1022]:      DCPowerS3,
+	_MeasurementLowerName[1013:1022]: DCPowerS3,
+	_MeasurementName[1022:1032]:      DCEnergyS3,
+	_MeasurementLowerName[1022:1032]: DCEnergyS3,
+	_MeasurementName[1032:1043]:      DCCurrentS4,
+	_MeasurementLowerName[1032:1043]: DCCurrentS4,
+	_MeasurementName[1043:1054]:      DCVoltageS4,
+	_MeasurementLowerName[1043:1054]: DCVoltageS4,
+	_MeasurementName[1054:1063]:      DCPowerS4,
+	_MeasurementLowerName[1054:1063]: DCPowerS4,
+	_MeasurementName[1063:1073]:      DCEnergyS4,
+	_MeasurementLowerName[1063:1073]: DCEnergyS4,
+	_MeasurementName[1073:1084]:      ChargeState,
+	_MeasurementLowerName[1073:1084]: ChargeState,
+	_MeasurementName[1084:1098]:      BatteryVoltage,
+	_MeasurementLowerName[1084:1098]: BatteryVoltage,
+	_MeasurementName[1098:1108]:      PhaseAngle,
+	_MeasurementLowerName[1098:1108]: PhaseAngle,
 }
 
 var _MeasurementNames = []string{
@@ -356,103 +359,104 @@ var _MeasurementNames = []string{
 	_MeasurementName[49:58],
 	_MeasurementName[58:67],
 	_MeasurementName[67:76],
-	_MeasurementName[76:83],
-	_MeasurementName[83:92],
-	_MeasurementName[92:101],
-	_MeasurementName[101:110],
-	_MeasurementName[110:122],
-	_MeasurementName[122:134],
-	_MeasurementName[134:146],
-	_MeasurementName[146:160],
-	_MeasurementName[160:174],
-	_MeasurementName[174:179],
-	_MeasurementName[179:186],
-	_MeasurementName[186:193],
-	_MeasurementName[193:200],
-	_MeasurementName[200:211],
-	_MeasurementName[211:224],
-	_MeasurementName[224:237],
-	_MeasurementName[237:250],
-	_MeasurementName[250:261],
-	_MeasurementName[261:274],
-	_MeasurementName[274:287],
-	_MeasurementName[287:300],
-	_MeasurementName[300:313],
-	_MeasurementName[313:328],
-	_MeasurementName[328:343],
-	_MeasurementName[343:358],
-	_MeasurementName[358:371],
-	_MeasurementName[371:386],
-	_MeasurementName[386:401],
-	_MeasurementName[401:416],
-	_MeasurementName[416:422],
-	_MeasurementName[422:430],
+	_MeasurementName[76:84],
+	_MeasurementName[84:91],
+	_MeasurementName[91:100],
+	_MeasurementName[100:109],
+	_MeasurementName[109:118],
+	_MeasurementName[118:130],
+	_MeasurementName[130:142],
+	_MeasurementName[142:154],
+	_MeasurementName[154:168],
+	_MeasurementName[168:182],
+	_MeasurementName[182:187],
+	_MeasurementName[187:194],
+	_MeasurementName[194:201],
+	_MeasurementName[201:208],
+	_MeasurementName[208:219],
+	_MeasurementName[219:232],
+	_MeasurementName[232:245],
+	_MeasurementName[245:258],
+	_MeasurementName[258:269],
+	_MeasurementName[269:282],
+	_MeasurementName[282:295],
+	_MeasurementName[295:308],
+	_MeasurementName[308:321],
+	_MeasurementName[321:336],
+	_MeasurementName[336:351],
+	_MeasurementName[351:366],
+	_MeasurementName[366:379],
+	_MeasurementName[379:394],
+	_MeasurementName[394:409],
+	_MeasurementName[409:424],
+	_MeasurementName[424:430],
 	_MeasurementName[430:438],
 	_MeasurementName[438:446],
-	_MeasurementName[446:449],
-	_MeasurementName[449:454],
-	_MeasurementName[454:459],
-	_MeasurementName[459:464],
-	_MeasurementName[464:480],
-	_MeasurementName[480:483],
-	_MeasurementName[483:488],
-	_MeasurementName[488:493],
-	_MeasurementName[493:498],
-	_MeasurementName[498:503],
-	_MeasurementName[503:508],
-	_MeasurementName[508:514],
-	_MeasurementName[514:522],
+	_MeasurementName[446:454],
+	_MeasurementName[454:457],
+	_MeasurementName[457:462],
+	_MeasurementName[462:467],
+	_MeasurementName[467:472],
+	_MeasurementName[472:488],
+	_MeasurementName[488:491],
+	_MeasurementName[491:496],
+	_MeasurementName[496:501],
+	_MeasurementName[501:506],
+	_MeasurementName[506:511],
+	_MeasurementName[511:516],
+	_MeasurementName[516:522],
 	_MeasurementName[522:530],
 	_MeasurementName[530:538],
 	_MeasurementName[538:546],
 	_MeasurementName[546:554],
-	_MeasurementName[554:560],
-	_MeasurementName[560:568],
+	_MeasurementName[554:562],
+	_MeasurementName[562:568],
 	_MeasurementName[568:576],
 	_MeasurementName[576:584],
 	_MeasurementName[584:592],
 	_MeasurementName[592:600],
-	_MeasurementName[600:611],
-	_MeasurementName[611:624],
-	_MeasurementName[624:637],
-	_MeasurementName[637:650],
-	_MeasurementName[650:663],
-	_MeasurementName[663:676],
-	_MeasurementName[676:690],
-	_MeasurementName[690:706],
-	_MeasurementName[706:722],
-	_MeasurementName[722:738],
-	_MeasurementName[738:754],
-	_MeasurementName[754:770],
-	_MeasurementName[770:784],
-	_MeasurementName[784:800],
-	_MeasurementName[800:816],
-	_MeasurementName[816:832],
-	_MeasurementName[832:848],
-	_MeasurementName[848:864],
-	_MeasurementName[864:873],
-	_MeasurementName[873:882],
-	_MeasurementName[882:889],
-	_MeasurementName[889:901],
-	_MeasurementName[901:912],
-	_MeasurementName[912:923],
-	_MeasurementName[923:932],
-	_MeasurementName[932:942],
-	_MeasurementName[942:953],
-	_MeasurementName[953:964],
-	_MeasurementName[964:973],
-	_MeasurementName[973:983],
-	_MeasurementName[983:994],
-	_MeasurementName[994:1005],
-	_MeasurementName[1005:1014],
-	_MeasurementName[1014:1024],
-	_MeasurementName[1024:1035],
-	_MeasurementName[1035:1046],
-	_MeasurementName[1046:1055],
-	_MeasurementName[1055:1065],
-	_MeasurementName[1065:1076],
-	_MeasurementName[1076:1090],
-	_MeasurementName[1090:1100],
+	_MeasurementName[600:608],
+	_MeasurementName[608:619],
+	_MeasurementName[619:632],
+	_MeasurementName[632:645],
+	_MeasurementName[645:658],
+	_MeasurementName[658:671],
+	_MeasurementName[671:684],
+	_MeasurementName[684:698],
+	_MeasurementName[698:714],
+	_MeasurementName[714:730],
+	_MeasurementName[730:746],
+	_MeasurementName[746:762],
+	_MeasurementName[762:778],
+	_MeasurementName[778:792],
+	_MeasurementName[792:808],
+	_MeasurementName[808:824],
+	_MeasurementName[824:840],
+	_MeasurementName[840:856],
+	_MeasurementName[856:872],
+	_MeasurementName[872:881],
+	_MeasurementName[881:890],
+	_MeasurementName[890:897],
+	_MeasurementName[897:909],
+	_MeasurementName[909:920],
+	_MeasurementName[920:931],
+	_MeasurementName[931:940],
+	_MeasurementName[940:950],
+	_MeasurementName[950:961],
+	_MeasurementName[961:972],
+	_MeasurementName[972:981],
+	_MeasurementName[981:991],
+	_MeasurementName[991:1002],
+	_MeasurementName[1002:1013],
+	_MeasurementName[1013:1022],
+	_MeasurementName[1022:1032],
+	_MeasurementName[1032:1043],
+	_MeasurementName[1043:1054],
+	_MeasurementName[1054:1063],
+	_MeasurementName[1063:1073],
+	_MeasurementName[1073:1084],
+	_MeasurementName[1084:1098],
+	_MeasurementName[1098:1108],
 }
 
 // MeasurementString retrieves an enum value from the enum constants string name.
