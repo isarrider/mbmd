@@ -27,7 +27,7 @@ func NewDS100Producer() Producer {
 		CurrentL1:       0x0410,
 		CurrentL2:       0x0412,
 		CurrentL3:       0x0414,
-		Current:         0x0418, // three phase vector current
+		Current:         0x0418, // three phase vector current. 0x0416 (neutral current) is not read
 		PowerL1:         0x041A,
 		PowerL2:         0x041C,
 		PowerL3:         0x041E,
