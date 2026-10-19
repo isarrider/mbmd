@@ -156,6 +156,11 @@ any type is considered valid.
 		"",
 		"InfluxDB password (optional)",
 	)
+	runCmd.PersistentFlags().Duration(
+		"influx-buffer",
+		time.Hour,
+		"Keep unsent data in memory for this long while InfluxDB is unavailable. Set 0 to disable.",
+	)
 
 	pflags := runCmd.PersistentFlags()
 
@@ -166,7 +171,7 @@ any type is considered valid.
 	bindPFlagsWithPrefix(pflags, "mqtt", "broker", "topic", "user", "password", "clientid", "qos", "homie")
 
 	// influx
-	bindPFlagsWithPrefix(pflags, "influx", "url", "database", "measurement", "organization", "token", "user", "password")
+	bindPFlagsWithPrefix(pflags, "influx", "url", "database", "measurement", "organization", "token", "user", "password", "buffer")
 }
 
 // checkVersion validates if updates are available
@@ -338,6 +343,7 @@ func run(cmd *cobra.Command, args []string) {
 			viper.GetString("influx.token"),
 			viper.GetString("influx.user"),
 			viper.GetString("influx.password"),
+			viper.GetDuration("influx.buffer"),
 		)
 
 		tee.AttachRunner(server.NewSnipRunner(influx.Run))
