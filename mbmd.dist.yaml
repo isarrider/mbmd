@@ -7,7 +7,6 @@ mqtt:
   topic: mbmd
   user:
   password:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
   clientid: mbmd
   qos: 0
   retain: false

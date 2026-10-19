@@ -220,6 +220,8 @@ By default, readings are published at `/mbmd/<unique id>/<reading>`. Rate limiti
 
 There is also the option to directly insert the data into an influxdb database by using the command-line options available. InfluxDB 1.8 and 2.0 are currently supported. to enable this, add the `--influx-database` and the `--influx-url` commandline parameter. More advanced configuration is available, to learn more checkout the [mbmd_run.md](docs/mbmd_run.md) documentation
 
+If InfluxDB is unavailable, mbmd keeps unsent data in memory and writes it once the database is back. The default is 1 hour, configurable with `--influx-buffer` (`0` disables it). Buffered data is lost if mbmd restarts.
+
 # Supported Devices
 
 `mbmd` supports a range of DIN rail meters and grid inverters.
