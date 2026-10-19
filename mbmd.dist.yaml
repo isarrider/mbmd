@@ -7,7 +7,6 @@ mqtt:
   topic: mbmd
   user:
   password:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
   clientid: mbmd
   qos: 0
   homie: homie
@@ -19,7 +18,6 @@ influx:
   measurement: mbmd
   user:
   password:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
 
 # influxdb_v2 config
 influx:
@@ -28,7 +26,6 @@ influx:
   measurement: mbmd
   organization:
   token:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
 
 # adapters are referenced by device
 adapters:
