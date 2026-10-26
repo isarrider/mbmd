@@ -19,7 +19,11 @@ func NewDS100Producer() Producer {
 		VoltageL1:       0x0400,
 		VoltageL2:       0x0402,
 		VoltageL3:       0x0404,
-		Voltage:         0x040C,
+		VoltageL1_L2:    0x0406,
+		VoltageL2_L3:    0x0408,
+		VoltageL3_L1:    0x040A,
+		Voltage:         0x040C, // average L-N
+		VoltageL_L_avg:  0x040E,
 		CurrentL1:       0x0410,
 		CurrentL2:       0x0412,
 		CurrentL3:       0x0414,
@@ -36,6 +40,9 @@ func NewDS100Producer() Producer {
 		ReactivePowerL2: 0x042C,
 		ReactivePowerL3: 0x042E,
 		ReactivePower:   0x0430,
+		FrequencyL1:     0x0432,
+		FrequencyL2:     0x0433,
+		FrequencyL3:     0x0434,
 		Frequency:       0x0435,
 		CosphiL1:        0x0436,
 		CosphiL2:        0x0437,
@@ -104,6 +111,7 @@ func (p *DS100Producer) Probe() Operation {
 func (p *DS100Producer) Produce() (res []Operation) {
 	for _, op := range []Measurement{
 		VoltageL1, VoltageL2, VoltageL3, Voltage,
+		VoltageL1_L2, VoltageL2_L3, VoltageL3_L1, VoltageL_L_avg,
 	} {
 		res = append(res, p.snip32u(op, 1000))
 	}
@@ -136,7 +144,7 @@ func (p *DS100Producer) Produce() (res []Operation) {
 	}
 
 	for _, op := range []Measurement{
-		Frequency,
+		FrequencyL1, FrequencyL2, FrequencyL3, Frequency,
 	} {
 		res = append(res, p.snip16u(op, 10))
 	}
