@@ -3,20 +3,25 @@ package server
 import (
 	"fmt"
 	"log"
+	"math"
 	"time"
 
 	influxdb "github.com/influxdata/influxdb-client-go/v2"
-	api "github.com/influxdata/influxdb-client-go/v2/api"
+	influxlog "github.com/influxdata/influxdb-client-go/v2/log"
 )
 
 // Influx is an InfluxDB v2 publisher
 type Influx struct {
 	client      influxdb.Client
-	writer      api.WriteAPI
+	org         string
+	database    string
 	measurement string
 }
 
-// NewInfluxClient creates new publisher for influx
+// NewInfluxClient creates new publisher for influx.
+// maxRetries: 0 means retry indefinitely.
+// retryBufferLimit: max number of points to buffer while DB is unavailable.
+// maxRetryInterval: cap on exponential back-off between retries, in milliseconds.
 func NewInfluxClient(
 	url string,
 	database string,
@@ -25,13 +30,14 @@ func NewInfluxClient(
 	token string,
 	user string,
 	password string,
+	maxRetries uint,
+	retryBufferLimit uint,
+	maxRetryInterval uint,
 ) *Influx {
 	// InfluxDB v1 compatibility
 	if token == "" && user != "" {
 		token = fmt.Sprintf("%s:%s", user, password)
 	}
-
-	client := influxdb.NewClient(url, token)
 
 	if database == "" {
 		log.Fatal("influx: missing database")
@@ -40,19 +46,42 @@ func NewInfluxClient(
 		log.Fatal("influx: missing measurement")
 	}
 
+	// 0 → retry indefinitely (use the largest representable uint)
+	retries := maxRetries
+	if retries == 0 {
+		retries = math.MaxUint32
+	}
+
+	options := influxdb.DefaultOptions().
+		SetPrecision(time.Second).
+		SetMaxRetries(retries).
+		SetMaxRetryTime(math.MaxUint32).       // no aggregate retry timeout
+		SetMaxRetryInterval(maxRetryInterval). // ms; cap per-attempt back-off
+		SetRetryBufferLimit(retryBufferLimit)  // max queued points
+
+	client := influxdb.NewClientWithOptions(url, token, options)
+
+	// suppress the default influx-client logger; errors surface via writer.Errors()
+	influxlog.Log = nil
+
 	return &Influx{
 		client:      client,
+		org:         org,
+		database:    database,
 		measurement: measurement,
-		writer:      client.WriteAPI(org, database),
 	}
 }
 
 // Run Influx publisher
 func (m *Influx) Run(in <-chan QuerySnip) {
-	// log errors
+	// WriteAPI is non-blocking: points are queued and flushed in the background,
+	// with automatic retry when the DB is temporarily unavailable.
+	writer := m.client.WriteAPI(m.org, m.database)
+
+	// log async write errors
 	go func() {
-		for err := range m.writer.Errors() {
-			log.Printf("influxdb error: %v", err)
+		for err := range writer.Errors() {
+			log.Printf("influx: write error: %v", err)
 		}
 	}()
 
@@ -68,7 +97,7 @@ func (m *Influx) Run(in <-chan QuerySnip) {
 
 		// write asynchronously
 		p := influxdb.NewPoint(m.measurement, tags, fields, time.Now())
-		m.writer.WritePoint(p)
+		writer.WritePoint(p)
 	}
 
 	m.client.Close()
