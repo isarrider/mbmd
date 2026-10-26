@@ -27,7 +27,8 @@ func NewDS100Producer() Producer {
 		CurrentL1:       0x0410,
 		CurrentL2:       0x0412,
 		CurrentL3:       0x0414,
-		Current:         0x0418, // three phase vector current. 0x0416 (neutral current) is not read
+		CurrentN:        0x0416,
+		Current:         0x0418, // three phase vector current
 		PowerL1:         0x041A,
 		PowerL2:         0x041C,
 		PowerL3:         0x041E,
@@ -117,7 +118,7 @@ func (p *DS100Producer) Produce() (res []Operation) {
 	}
 
 	for _, op := range []Measurement{
-		CurrentL1, CurrentL2, CurrentL3, Current,
+		CurrentL1, CurrentL2, CurrentL3, CurrentN, Current,
 	} {
 		res = append(res, p.snip32s(op, 1000))
 	}
