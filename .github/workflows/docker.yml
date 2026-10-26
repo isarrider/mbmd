@@ -37,7 +37,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/volkszaehler/mbmd
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=nightly,enable={{is_default_branch}}
             type=raw,value=nightly.{{date 'YYYYMMDD'}}-{{sha}},enable={{is_default_branch}}
