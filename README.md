@@ -86,7 +86,7 @@ web page that updates itself with the latest values:
 
 Alternatively run `mbmd` using the Docker image:
 
-	docker run -p 8080:8080 --device=/dev/ttyUSB0 volkszaehler/mbmd run -a /dev/ttyUSB0 -u 0.0.0.0:8080 -d sdm:1
+	docker run -p 8080:8080 --device=/dev/ttyUSB0 ghcr.io/volkszaehler/mbmd run -a /dev/ttyUSB0 -u 0.0.0.0:8080 -d sdm:1
 
 To mount the config file into the docker container use `-v $(pwd)/mbmd.yaml:/etc/mbmd.yaml`.
 
@@ -216,12 +216,6 @@ Another option for receiving client updates is by using the built-in MQTT publis
 By default, readings are published at `/mbmd/<unique id>/<reading>`. Rate limiting is possible.
 
 
-## Homie API
-
-[Homie](https://homieiot.github.io) is an MQTT convention for IoT/M2M. `mbmd` publishes all devices and readings using the Homie protocol. This allows systems like e.g. OpenHAB to auto-discover devices operated by `mbmd`:
-
-![auto-discovery of thinks in OpenHAB](img/openhab.png)
-
 ## InfluxDB support
 
 There is also the option to directly insert the data into an influxdb database by using the command-line options available. InfluxDB 1.8 and 2.0 are currently supported. to enable this, add the `--influx-database` and the `--influx-url` commandline parameter. More advanced configuration is available, to learn more checkout the [mbmd_run.md](docs/mbmd_run.md) documentation
@@ -264,6 +258,7 @@ Legend: `+` supported, `-` not available, `(+)` only one energy direction
 | Eltako DSZ15DZMOD/DSZ16 | `ELTAKODSZ15` / `ELTAKODSZ16` | 3 | + | + | + | + | + | + | - | - |
 | Finder 7M.24 | `FIND7M24` | 1 | + | + | + | + | + | + | - | + |
 | Finder 7M.38 | `FIND7M38` | 3 | + | + | + | + | + | + | - | + |
+| Gossen Metrawatt ENERGYMID EM228x/EM238x | `ENERGYMID` | 1/3 | + | + | + | + | + | + | - | - |
 | Inepro Pro 380 | `INEPRO` | 3 | + | + | + | + | + | + | + | - |
 | Janitza B-Series | `JANITZA` | 3 | + | + | + | + | + | + | + | - |
 | Lovato DMG610 | `DMG610` | 3 | + | + | + | - | + | + | + | + |
@@ -274,6 +269,7 @@ Legend: `+` supported, `-` not available, `(+)` only one energy direction
 | Saia Burgess (SBC) ALE3 | `SBC` | 3 | + | + | + | + | + | + | - | - |
 | Schneider Electric iEM3000 | `IEM3000` | 3 | + | + | + | - | + | + | (+) | - |
 | Siemens PAC2200 | `PAC2200` | 3 | + | + | + | + | + | + | - | - |
+| Socomec Countis E3x/E4x | `SOCOMEC` | 3 | + | + | + | + | + | + | - | - |
 | SolarEdge SE-MTR-3Y | `SEMTR` | 3 | + | + | + | + | + | + | + | - |
 | Wago 879-30xx | `WAGO87930` | 3 | + | + | + | + | + | + | + | - |
 
@@ -305,6 +301,10 @@ Legend: `+` supported, `-` not available, `(+)` only one energy direction
   power, power factor and total import/export energy are supported; the DSZ16's additional
   measurements (reactive/apparent power, frequency, per-phase energy) are not yet implemented
   ([Modbus spec](https://www.eltako.com/fileadmin/downloads/de/_bedienung/Modbus-RTU_protocol_specification_for_DSZ15DZMOD_V1.6_English_version.pdf)).
+- **Gossen Metrawatt ENERGYMID EM228x/EM238x**: MID meters for direct (EM2281/EM2289) and transformer
+  (EM2381/EM2387/EM2389) connection. Voltages, currents and powers are decoded using the device's
+  exponent registers, energies using the primary energy factor, so CT/VT ratios are applied by the meter.
+  Modbus RTU defaults to 8E1 ([Modbus spec](http://datenblatt.stark-elektronik.de/em2281-em2389-modbus-rtu.pdf)).
 - **Inepro Pro 380**: Compact (4TE) MID meter with extensive features.
   Can be connected 3P4W, 3P3W and 1P2W. Includes per-direction active/reactive energy consumption and supports two tariffs. Energy resolution is 2 digits per kWh.
 - **Janitza B-Series**: These meters have a higher update rate than the Eastron
@@ -318,6 +318,10 @@ Legend: `+` supported, `-` not available, `(+)` only one energy direction
 - **Saia Burgess (SBC) ALE3**: This compact Saia Burgess Controls meter is comparable to the SDM630.
   It has two tariffs, both import and export depending on meter version and compact (4TE). It's often used with Viessmann heat pumps.
 - **Schneider Electric iEM3000**: Professional meter with loads of configurable max/average measurements with timestamp functionality.
+- **Socomec Countis E3x/E4x**: 3P meters using Socomec's JBUS common table, so other devices of that
+  family may work as well. Voltages, currents, powers and power factor come from the metrology table
+  and are scaled by the configured CT/VT ratio. Total import/export energy has a resolution of 1 kWh
+  ([Modbus spec](https://github.com/user-attachments/files/30981536/Socomec_.MODBUS_E43.XLS)).
 
 ## Modbus TCP Grid Inverters
 

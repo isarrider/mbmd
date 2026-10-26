@@ -25,6 +25,7 @@ mbmd run [flags]
                                          DZG       DZG Metering GmbH DVH4013 meters
                                          ELTAKODSZ15Eltako DSZ15DZMOD / DSZ16
                                          ELTAKODSZ16Eltako DSZ15DZMOD / DSZ16
+                                         ENERGYMID Gossen Metrawatt ENERGYMID EM228x/EM238x
                                          FIND7M24  Finder 7M.24
                                          FIND7M38  Finder 7M.38
                                          IEM3000   Schneider Electric iEM3000 series
@@ -45,6 +46,7 @@ mbmd run [flags]
                                          SDM72     Eastron SDM72
                                          SDM72V2   Eastron SDM72 v2
                                          SEMTR     SolarEdge SE-MTR-3Y
+                                         SOCOMEC   Socomec Countis E3x/E4x series
                                          WAGO87930 Wago 879-30XX
                                          WS100     B+G e-tech WS100
                                          X961A     Eastron SMART X96-1A
@@ -63,9 +65,9 @@ mbmd run [flags]
       --influx-user string           InfluxDB user (optional)
   -m, --mqtt-broker string           MQTT broker URI. ex: tcp://10.10.1.1:1883
       --mqtt-clientid string         MQTT client id (default "mbmd")
-      --mqtt-homie string            MQTT Homie IoT discovery base topic (homieiot.github.io). Set empty to disable. (default "homie")
       --mqtt-password string         MQTT password (optional)
       --mqtt-qos int                 MQTT quality of service 0,1,2 (default 0)
+      --mqtt-retain                  Publish measurements with the MQTT retain flag set
       --mqtt-topic string            MQTT root topic. Set empty to disable publishing. (default "mbmd")
       --mqtt-user string             MQTT user (optional)
       --profile string               Add pprof debug information
@@ -84,9 +86,8 @@ mbmd run [flags]
   -c, --config string      Config file (default is $HOME/mbmd.yaml, ./mbmd.yaml, /etc/mbmd.yaml)
   -h, --help               Help for mbmd
       --raw                Log raw device data
-      --rtu                Use RTU over TCP for default adapter.
+      --rtu                Use RTU over TCP for TCP adapters, i.e. the default adapter and adapters given per device via -d type:id@host:port.
                            Typically used with RS485 to Ethernet adapters that don't perform protocol conversion (e.g. USR-TCP232).
-                           Only applicable if the default adapter is a TCP connection
       --timeout duration   Timeout for MODBUS communication (default 300ms)
   -v, --verbose            Verbose mode
 ```
