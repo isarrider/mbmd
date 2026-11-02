@@ -18,7 +18,8 @@ influx:
   measurement: mbmd
   user:
   password:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
+  # how long readings are kept in memory and retried while the database is unavailable (e.g. 1h)
+  buffer: 0
 
 # influxdb_v2 config
 influx:
@@ -27,7 +28,7 @@ influx:
   measurement: mbmd
   organization:
   token:
-  buffer: 1h # keep unsent data in memory while influx is down, 0 to disable
+  buffer: 0
 
 # adapters are referenced by device
 adapters:
