@@ -158,8 +158,8 @@ any type is considered valid.
 	)
 	runCmd.PersistentFlags().Duration(
 		"influx-buffer",
-		time.Hour,
-		"Keep unsent data in memory for this long while InfluxDB is unavailable. Set 0 to disable.",
+		0,
+		"InfluxDB write buffer duration. Readings are kept in memory and retried for this long while the database is unavailable, e.g. 1h. 0 keeps the client default of 5 retries within 3 minutes.",
 	)
 
 	pflags := runCmd.PersistentFlags()
