@@ -10,6 +10,20 @@ Modbus communication is possible over RS485 connections as well as TCP sockets.
 
 `mbmd` was originally developer by Mathias Dalheimer under the name of `gosdm`. Previous releases are still [available](https://github.com/gonium/gosdm630).
 
+## About this fork
+
+This is [isarrider/mbmd](https://github.com/isarrider/mbmd), a fork of [volkszaehler/mbmd](https://github.com/volkszaehler/mbmd). It follows upstream `master` and adds the changes below, which are not in upstream yet. Each one is (or is meant to be) proposed upstream from its own branch. Once upstream merges a change, its row is removed here.
+
+| Change | Files | Upstream |
+|---|---|---|
+| **DS100: line voltages and per-phase frequency.** Reads the L-L voltages L1-L2, L2-L3, L3-L1 (`0x0406`–`0x040A`), the average L-L voltage (`0x040E`) and the L1/L2/L3 frequencies (`0x0432`–`0x0434`). | `meters/rs485/ds100.go` | [#411](https://github.com/volkszaehler/mbmd/pull/411) |
+| **DS100: neutral current.** New `CurrentN` measurement ("Neutral Current", A), read from `0x0416`. `Current` stays at `0x0418` (three-phase vector current). | `meters/measurements.go`, `meters/measurement_enumer.go`, `meters/rs485/ds100.go` | [#411](https://github.com/volkszaehler/mbmd/pull/411) |
+| **InfluxDB write buffering.** `--influx-buffer` / `influx.buffer` keeps unsent readings in memory and retries for that long while InfluxDB is down, e.g. `1h`. The default `0` keeps the client's normal behaviour. The code is andig's upstream implementation. | `server/influx.go`, `cmd/run.go`, `cmd/confighandler.go`, `mbmd.dist.yaml`, `docs/mbmd_run.md` | [#406](https://github.com/volkszaehler/mbmd/pull/406) |
+| **Tests for InfluxDB write buffering.** Unit tests for the buffer options, plus an outage test against a fake InfluxDB that checks every reading arrives once the database is back. | `server/influx_test.go` | fork only, to be proposed for [#406](https://github.com/volkszaehler/mbmd/pull/406) |
+| **Docker images published from the fork.** The image name is taken from the repository, so this fork publishes to `ghcr.io/isarrider/mbmd` instead of `ghcr.io/volkszaehler/mbmd`. | `.github/workflows/docker.yml` | fork only |
+
+To see the exact difference against upstream: [compare volkszaehler:master...isarrider:master](https://github.com/volkszaehler/mbmd/compare/master...isarrider:mbmd:master).
+
 # Table of Contents
 
 * [Requirements](#requirements)
