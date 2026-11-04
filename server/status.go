@@ -23,9 +23,12 @@ type ModbusStatus struct {
 
 // DeviceStatus represents a devices runtime status
 type DeviceStatus struct {
-	Device string
-	Type   string
-	Online bool
+	Device  string
+	Type    string
+	Model   string `json:",omitempty"`
+	Serial  string `json:",omitempty"`
+	Version string `json:",omitempty"`
+	Online  bool
 	ModbusStatus
 }
 
@@ -80,6 +83,9 @@ func NewStatus(qe DeviceInfo, control <-chan ControlSnip) *Status {
 			ds := DeviceStatus{
 				Device:       c.Device,
 				Type:         desc.Manufacturer,
+				Model:        desc.Model,
+				Serial:       desc.Serial,
+				Version:      desc.Version,
 				Online:       c.Status.Online,
 				ModbusStatus: mbs,
 			}
