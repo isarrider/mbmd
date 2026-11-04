@@ -126,7 +126,7 @@ func (d *RS485) Descriptor() meters.DeviceDescriptor {
 
 // identify reads the device details of an IdentityProducer. Operations that
 // succeed or that the device rejects are not read again, operations that fail
-// for other reasons are retried on the next query.
+// for other reasons are retried on the next query, up to maxOpFailures times.
 func (d *RS485) identify(client modbus.Client) {
 	if d.identity == nil {
 		ip, ok := d.producer.(IdentityProducer)
@@ -144,15 +144,28 @@ func (d *RS485) identify(client modbus.Client) {
 	// not nil, nil means the identity operations have not been fetched yet
 	pending := []IdentityOperation{}
 	for _, op := range d.identity {
+		// measurement zero is unused, so the key does not collide with an operation
+		key := opKey{funcCode: op.FuncCode, opCode: op.OpCode}
+		where := fmt.Sprintf("%s register 0x%04X", registerType(op.FuncCode), op.OpCode)
+
 		b, err := readRegisters(client, op.FuncCode, op.OpCode, op.ReadLen)
 		if err != nil {
 			if isRejected(err) {
-				log.Printf("device %s: device details at %s register 0x%04X are not supported: %v", d.name(), registerType(op.FuncCode), op.OpCode, err)
-			} else {
+				log.Printf("device %s: device details at %s are not supported: %v", d.name(), where, err)
+				continue
+			}
+
+			d.failures[key]++
+			if d.failures[key] < maxOpFailures {
+				log.Printf("device %s: reading device details at %s failed (%d/%d): %v", d.name(), where, d.failures[key], maxOpFailures, err)
 				pending = append(pending, op)
+			} else {
+				delete(d.failures, key)
+				log.Printf("device %s: reading device details at %s failed %d times, giving up: %v", d.name(), where, maxOpFailures, err)
 			}
 			continue
 		}
+		delete(d.failures, key)
 
 		d.mu.Lock()
 		op.Apply(b, &d.details)
@@ -162,7 +175,14 @@ func (d *RS485) identify(client modbus.Client) {
 
 	if len(pending) == 0 && (d.details.Serial != "" || d.details.Version != "") {
 		desc := d.Descriptor()
-		log.Printf("device %s: %s, serial %s, version %s", d.name(), desc.Model, desc.Serial, desc.Version)
+		details := []string{desc.Model}
+		if desc.Serial != "" {
+			details = append(details, "serial "+desc.Serial)
+		}
+		if desc.Version != "" {
+			details = append(details, "version "+desc.Version)
+		}
+		log.Printf("device %s: %s", d.name(), strings.Join(details, ", "))
 	}
 }
 

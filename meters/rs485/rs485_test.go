@@ -368,3 +368,22 @@ func TestQueryIdentityRejected(t *testing.T) {
 	assert.Equal(t, 1, client.reads[0x1000])
 	assert.Equal(t, "", d.Descriptor().Serial)
 }
+
+func TestQueryIdentityGivesUpAfterTimeouts(t *testing.T) {
+	d := newDevice("test", &testIdentityProducer{testProducer{ops: []Operation{newTestOp(VoltageL1, 1)}}})
+	client := &identityClient{
+		testClient: *newTestClient(map[uint16]error{0x2000: errors.New("serial: timeout")}),
+		data:       map[uint16][]byte{0x1000: {0x12, 0x34}, 0x2000: {0x03, 0x01}},
+	}
+
+	for i := 0; i < 2*maxOpFailures; i++ {
+		res, err := d.Query(client)
+		assert.NoError(t, err)
+		assert.Len(t, res, 1)
+	}
+
+	// the version timed out on every try and is not read after maxOpFailures tries
+	assert.Equal(t, maxOpFailures, client.reads[0x2000])
+	assert.Equal(t, "1234", d.Descriptor().Serial)
+	assert.Empty(t, d.failures)
+}
