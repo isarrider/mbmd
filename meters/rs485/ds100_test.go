@@ -104,3 +104,36 @@ func TestDS100Opcodes(t *testing.T) {
 		addresses[opcode] = iec
 	}
 }
+
+func TestDS100DemandQuadrantResettable(t *testing.T) {
+	ops := make(map[Measurement]Operation)
+	for _, op := range NewDS100Producer().Produce() {
+		ops[op.IEC61850] = op
+	}
+
+	// spot checks of the addresses in the manual, section 3.1 and 3.2
+	for iec, opcode := range map[Measurement]uint16{
+		ImportPowerDemandL1:        0x043A,
+		ReactivePowerDemand:        0x0468,
+		ImportPowerMaxDemandL1:     0x046A,
+		ReactivePowerMaxDemand:     0x0498,
+		ReactiveQ1:                 0x014A,
+		ReactiveQ4L3:               0x0622,
+		ResettableSum:              0x062C,
+		ResettableReactiveExportL3: 0x065A,
+	} {
+		assert.Equal(t, opcode, ops[iec].OpCode, iec.String())
+	}
+
+	// demand in 0.1 W, energy in 0.01 kWh / kvarh
+	raw := []byte{0x00, 0x00, 0x30, 0x39} // 12345
+	assert.InDelta(t, 1234.5, ops[ImportPowerMaxDemand].Transform(raw), 1e-9)
+	assert.InDelta(t, 123.45, ops[ReactiveQ2].Transform(raw), 1e-9)
+	assert.InDelta(t, 123.45, ops[ResettableImport].Transform(raw), 1e-9)
+
+	// totals are signed, import and export are not
+	negative := []byte{0xff, 0xff, 0xff, 0x9c} // -100
+	assert.InDelta(t, -10.0, ops[PowerDemand].Transform(negative), 1e-9)
+	assert.InDelta(t, -1.0, ops[ResettableSum].Transform(negative), 1e-9)
+	assert.Greater(t, ops[ExportPowerDemand].Transform(negative), 0.0)
+}

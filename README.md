@@ -282,6 +282,9 @@ Legend: `+` supported, `-` not available, `(+)` only one energy direction
   5 = netting (DS100-00B and -00B-R from model year 2024 on). With 4 or 5, `Sum` turns negative once
   export exceeds import. `Import` and `Export` are always the separate counters.
   Currents are signed and follow the direction of active power, so they read negative while exporting.
+  Demand values are the average power over the meter's demand period (15 minutes by default),
+  maximum demand is the highest of these since the demand values were last cleared on the meter.
+  The resettable counters only differ from `Import`, `Export` and `Sum` after they were reset on the meter.
 - **B+G e-tech WS100**: Cheap and small (1TE), 1P MID meter.
 - **Bernecker (BE) MPM3PM**: Compact (4TE) three phase meter.
 - **Carlo Gavazzi EM24**: Compact (4TE), 3P meter with RS-485 interface.
