@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-const _MeasurementName = "FrequencyFrequencyL1FrequencyL2FrequencyL3CurrentCurrentL1CurrentL2CurrentL3CurrentNVoltageVoltageL1VoltageL2VoltageL3VoltageL1_L2VoltageL2_L3VoltageL3_L1VoltageL_N_avgVoltageL_L_avgPowerPowerL1PowerL2PowerL3ImportPowerImportPowerL1ImportPowerL2ImportPowerL3ExportPowerExportPowerL1ExportPowerL2ExportPowerL3ReactivePowerReactivePowerL1ReactivePowerL2ReactivePowerL3ApparentPowerApparentPowerL1ApparentPowerL2ApparentPowerL3CosphiCosphiL1CosphiL2CosphiL3THDTHDL1THDL2THDL3ThreePhase_Vec_ASumSumT1SumT2SumL1SumL2SumL3ImportImportT1ImportT2ImportL1ImportL2ImportL3ExportExportT1ExportT2ExportL1ExportL2ExportL3ReactiveSumReactiveSumT1ReactiveSumT2ReactiveSumL1ReactiveSumL2ReactiveSumL3ReactiveImportReactiveImportT1ReactiveImportT2ReactiveImportL1ReactiveImportL2ReactiveImportL3ReactiveExportReactiveExportT1ReactiveExportT2ReactiveExportL1ReactiveExportL2ReactiveExportL3DCCurrentDCVoltageDCPowerHeatSinkTempCabinetTempDCCurrentS1DCVoltageS1DCPowerS1DCEnergyS1DCCurrentS2DCVoltageS2DCPowerS2DCEnergyS2DCCurrentS3DCVoltageS3DCPowerS3DCEnergyS3DCCurrentS4DCVoltageS4DCPowerS4DCEnergyS4ChargeStateBatteryVoltagePhaseAngle"
+const _MeasurementName = "FrequencyFrequencyL1FrequencyL2FrequencyL3CurrentCurrentL1CurrentL2CurrentL3CurrentNVoltageVoltageL1VoltageL2VoltageL3VoltageL1_L2VoltageL2_L3VoltageL3_L1VoltageL_N_avgVoltageL_L_avgPowerPowerL1PowerL2PowerL3ImportPowerImportPowerL1ImportPowerL2ImportPowerL3ExportPowerExportPowerL1ExportPowerL2ExportPowerL3ReactivePowerReactivePowerL1ReactivePowerL2ReactivePowerL3ApparentPowerApparentPowerL1ApparentPowerL2ApparentPowerL3CosphiCosphiL1CosphiL2CosphiL3THDTHDL1THDL2THDL3ThreePhase_Vec_ASumSumT1SumT2SumL1SumL2SumL3ImportImportT1ImportT2ImportL1ImportL2ImportL3ExportExportT1ExportT2ExportL1ExportL2ExportL3ReactiveSumReactiveSumT1ReactiveSumT2ReactiveSumL1ReactiveSumL2ReactiveSumL3ReactiveImportReactiveImportT1ReactiveImportT2ReactiveImportL1ReactiveImportL2ReactiveImportL3ReactiveExportReactiveExportT1ReactiveExportT2ReactiveExportL1ReactiveExportL2ReactiveExportL3DCCurrentDCVoltageDCPowerHeatSinkTempCabinetTempDCCurrentS1DCVoltageS1DCPowerS1DCEnergyS1DCCurrentS2DCVoltageS2DCPowerS2DCEnergyS2DCCurrentS3DCVoltageS3DCPowerS3DCEnergyS3DCCurrentS4DCVoltageS4DCPowerS4DCEnergyS4ChargeStateBatteryVoltagePhaseAngleImportPowerDemandImportPowerDemandL1ImportPowerDemandL2ImportPowerDemandL3ExportPowerDemandExportPowerDemandL1ExportPowerDemandL2ExportPowerDemandL3PowerDemandPowerDemandL1PowerDemandL2PowerDemandL3ReactiveImportPowerDemandReactiveImportPowerDemandL1ReactiveImportPowerDemandL2ReactiveImportPowerDemandL3ReactiveExportPowerDemandReactiveExportPowerDemandL1ReactiveExportPowerDemandL2ReactiveExportPowerDemandL3ReactivePowerDemandReactivePowerDemandL1ReactivePowerDemandL2ReactivePowerDemandL3ImportPowerMaxDemandImportPowerMaxDemandL1ImportPowerMaxDemandL2ImportPowerMaxDemandL3ExportPowerMaxDemandExportPowerMaxDemandL1ExportPowerMaxDemandL2ExportPowerMaxDemandL3PowerMaxDemandPowerMaxDemandL1PowerMaxDemandL2PowerMaxDemandL3ReactiveImportPowerMaxDemandReactiveImportPowerMaxDemandL1ReactiveImportPowerMaxDemandL2ReactiveImportPowerMaxDemandL3ReactiveExportPowerMaxDemandReactiveExportPowerMaxDemandL1ReactiveExportPowerMaxDemandL2ReactiveExportPowerMaxDemandL3ReactivePowerMaxDemandReactivePowerMaxDemandL1ReactivePowerMaxDemandL2ReactivePowerMaxDemandL3ReactiveQ1ReactiveQ1L1ReactiveQ1L2ReactiveQ1L3ReactiveQ2ReactiveQ2L1ReactiveQ2L2ReactiveQ2L3ReactiveQ3ReactiveQ3L1ReactiveQ3L2ReactiveQ3L3ReactiveQ4ReactiveQ4L1ReactiveQ4L2ReactiveQ4L3ResettableSumResettableSumL1ResettableSumL2ResettableSumL3ResettableImportResettableImportL1ResettableImportL2ResettableImportL3ResettableExportResettableExportL1ResettableExportL2ResettableExportL3ResettableReactiveSumResettableReactiveSumL1ResettableReactiveSumL2ResettableReactiveSumL3ResettableReactiveImportResettableReactiveImportL1ResettableReactiveImportL2ResettableReactiveImportL3ResettableReactiveExportResettableReactiveExportL1ResettableReactiveExportL2ResettableReactiveExportL3"
 
-var _MeasurementIndex = [...]uint16{0, 9, 20, 31, 42, 49, 58, 67, 76, 84, 91, 100, 109, 118, 130, 142, 154, 168, 182, 187, 194, 201, 208, 219, 232, 245, 258, 269, 282, 295, 308, 321, 336, 351, 366, 379, 394, 409, 424, 430, 438, 446, 454, 457, 462, 467, 472, 488, 491, 496, 501, 506, 511, 516, 522, 530, 538, 546, 554, 562, 568, 576, 584, 592, 600, 608, 619, 632, 645, 658, 671, 684, 698, 714, 730, 746, 762, 778, 792, 808, 824, 840, 856, 872, 881, 890, 897, 909, 920, 931, 942, 951, 961, 972, 983, 992, 1002, 1013, 1024, 1033, 1043, 1054, 1065, 1074, 1084, 1095, 1109, 1119}
+var _MeasurementIndex = [...]uint16{0, 9, 20, 31, 42, 49, 58, 67, 76, 84, 91, 100, 109, 118, 130, 142, 154, 168, 182, 187, 194, 201, 208, 219, 232, 245, 258, 269, 282, 295, 308, 321, 336, 351, 366, 379, 394, 409, 424, 430, 438, 446, 454, 457, 462, 467, 472, 488, 491, 496, 501, 506, 511, 516, 522, 530, 538, 546, 554, 562, 568, 576, 584, 592, 600, 608, 619, 632, 645, 658, 671, 684, 698, 714, 730, 746, 762, 778, 792, 808, 824, 840, 856, 872, 881, 890, 897, 909, 920, 931, 942, 951, 961, 972, 983, 992, 1002, 1013, 1024, 1033, 1043, 1054, 1065, 1074, 1084, 1095, 1109, 1119, 1136, 1155, 1174, 1193, 1210, 1229, 1248, 1267, 1278, 1291, 1304, 1317, 1342, 1369, 1396, 1423, 1448, 1475, 1502, 1529, 1548, 1569, 1590, 1611, 1631, 1653, 1675, 1697, 1717, 1739, 1761, 1783, 1797, 1813, 1829, 1845, 1873, 1903, 1933, 1963, 1991, 2021, 2051, 2081, 2103, 2127, 2151, 2175, 2185, 2197, 2209, 2221, 2231, 2243, 2255, 2267, 2277, 2289, 2301, 2313, 2323, 2335, 2347, 2359, 2372, 2387, 2402, 2417, 2433, 2451, 2469, 2487, 2503, 2521, 2539, 2557, 2578, 2601, 2624, 2647, 2671, 2697, 2723, 2749, 2773, 2799, 2825, 2851}
 
-const _MeasurementLowerName = "frequencyfrequencyl1frequencyl2frequencyl3currentcurrentl1currentl2currentl3currentnvoltagevoltagel1voltagel2voltagel3voltagel1_l2voltagel2_l3voltagel3_l1voltagel_n_avgvoltagel_l_avgpowerpowerl1powerl2powerl3importpowerimportpowerl1importpowerl2importpowerl3exportpowerexportpowerl1exportpowerl2exportpowerl3reactivepowerreactivepowerl1reactivepowerl2reactivepowerl3apparentpowerapparentpowerl1apparentpowerl2apparentpowerl3cosphicosphil1cosphil2cosphil3thdthdl1thdl2thdl3threephase_vec_asumsumt1sumt2suml1suml2suml3importimportt1importt2importl1importl2importl3exportexportt1exportt2exportl1exportl2exportl3reactivesumreactivesumt1reactivesumt2reactivesuml1reactivesuml2reactivesuml3reactiveimportreactiveimportt1reactiveimportt2reactiveimportl1reactiveimportl2reactiveimportl3reactiveexportreactiveexportt1reactiveexportt2reactiveexportl1reactiveexportl2reactiveexportl3dccurrentdcvoltagedcpowerheatsinktempcabinettempdccurrents1dcvoltages1dcpowers1dcenergys1dccurrents2dcvoltages2dcpowers2dcenergys2dccurrents3dcvoltages3dcpowers3dcenergys3dccurrents4dcvoltages4dcpowers4dcenergys4chargestatebatteryvoltagephaseangle"
+const _MeasurementLowerName = "frequencyfrequencyl1frequencyl2frequencyl3currentcurrentl1currentl2currentl3currentnvoltagevoltagel1voltagel2voltagel3voltagel1_l2voltagel2_l3voltagel3_l1voltagel_n_avgvoltagel_l_avgpowerpowerl1powerl2powerl3importpowerimportpowerl1importpowerl2importpowerl3exportpowerexportpowerl1exportpowerl2exportpowerl3reactivepowerreactivepowerl1reactivepowerl2reactivepowerl3apparentpowerapparentpowerl1apparentpowerl2apparentpowerl3cosphicosphil1cosphil2cosphil3thdthdl1thdl2thdl3threephase_vec_asumsumt1sumt2suml1suml2suml3importimportt1importt2importl1importl2importl3exportexportt1exportt2exportl1exportl2exportl3reactivesumreactivesumt1reactivesumt2reactivesuml1reactivesuml2reactivesuml3reactiveimportreactiveimportt1reactiveimportt2reactiveimportl1reactiveimportl2reactiveimportl3reactiveexportreactiveexportt1reactiveexportt2reactiveexportl1reactiveexportl2reactiveexportl3dccurrentdcvoltagedcpowerheatsinktempcabinettempdccurrents1dcvoltages1dcpowers1dcenergys1dccurrents2dcvoltages2dcpowers2dcenergys2dccurrents3dcvoltages3dcpowers3dcenergys3dccurrents4dcvoltages4dcpowers4dcenergys4chargestatebatteryvoltagephaseangleimportpowerdemandimportpowerdemandl1importpowerdemandl2importpowerdemandl3exportpowerdemandexportpowerdemandl1exportpowerdemandl2exportpowerdemandl3powerdemandpowerdemandl1powerdemandl2powerdemandl3reactiveimportpowerdemandreactiveimportpowerdemandl1reactiveimportpowerdemandl2reactiveimportpowerdemandl3reactiveexportpowerdemandreactiveexportpowerdemandl1reactiveexportpowerdemandl2reactiveexportpowerdemandl3reactivepowerdemandreactivepowerdemandl1reactivepowerdemandl2reactivepowerdemandl3importpowermaxdemandimportpowermaxdemandl1importpowermaxdemandl2importpowermaxdemandl3exportpowermaxdemandexportpowermaxdemandl1exportpowermaxdemandl2exportpowermaxdemandl3powermaxdemandpowermaxdemandl1powermaxdemandl2powermaxdemandl3reactiveimportpowermaxdemandreactiveimportpowermaxdemandl1reactiveimportpowermaxdemandl2reactiveimportpowermaxdemandl3reactiveexportpowermaxdemandreactiveexportpowermaxdemandl1reactiveexportpowermaxdemandl2reactiveexportpowermaxdemandl3reactivepowermaxdemandreactivepowermaxdemandl1reactivepowermaxdemandl2reactivepowermaxdemandl3reactiveq1reactiveq1l1reactiveq1l2reactiveq1l3reactiveq2reactiveq2l1reactiveq2l2reactiveq2l3reactiveq3reactiveq3l1reactiveq3l2reactiveq3l3reactiveq4reactiveq4l1reactiveq4l2reactiveq4l3resettablesumresettablesuml1resettablesuml2resettablesuml3resettableimportresettableimportl1resettableimportl2resettableimportl3resettableexportresettableexportl1resettableexportl2resettableexportl3resettablereactivesumresettablereactivesuml1resettablereactivesuml2resettablereactivesuml3resettablereactiveimportresettablereactiveimportl1resettablereactiveimportl2resettablereactiveimportl3resettablereactiveexportresettablereactiveexportl1resettablereactiveexportl2resettablereactiveexportl3"
 
 func (i Measurement) String() string {
 	i -= 1
@@ -132,9 +132,97 @@ func _MeasurementNoOp() {
 	_ = x[ChargeState-(105)]
 	_ = x[BatteryVoltage-(106)]
 	_ = x[PhaseAngle-(107)]
+	_ = x[ImportPowerDemand-(108)]
+	_ = x[ImportPowerDemandL1-(109)]
+	_ = x[ImportPowerDemandL2-(110)]
+	_ = x[ImportPowerDemandL3-(111)]
+	_ = x[ExportPowerDemand-(112)]
+	_ = x[ExportPowerDemandL1-(113)]
+	_ = x[ExportPowerDemandL2-(114)]
+	_ = x[ExportPowerDemandL3-(115)]
+	_ = x[PowerDemand-(116)]
+	_ = x[PowerDemandL1-(117)]
+	_ = x[PowerDemandL2-(118)]
+	_ = x[PowerDemandL3-(119)]
+	_ = x[ReactiveImportPowerDemand-(120)]
+	_ = x[ReactiveImportPowerDemandL1-(121)]
+	_ = x[ReactiveImportPowerDemandL2-(122)]
+	_ = x[ReactiveImportPowerDemandL3-(123)]
+	_ = x[ReactiveExportPowerDemand-(124)]
+	_ = x[ReactiveExportPowerDemandL1-(125)]
+	_ = x[ReactiveExportPowerDemandL2-(126)]
+	_ = x[ReactiveExportPowerDemandL3-(127)]
+	_ = x[ReactivePowerDemand-(128)]
+	_ = x[ReactivePowerDemandL1-(129)]
+	_ = x[ReactivePowerDemandL2-(130)]
+	_ = x[ReactivePowerDemandL3-(131)]
+	_ = x[ImportPowerMaxDemand-(132)]
+	_ = x[ImportPowerMaxDemandL1-(133)]
+	_ = x[ImportPowerMaxDemandL2-(134)]
+	_ = x[ImportPowerMaxDemandL3-(135)]
+	_ = x[ExportPowerMaxDemand-(136)]
+	_ = x[ExportPowerMaxDemandL1-(137)]
+	_ = x[ExportPowerMaxDemandL2-(138)]
+	_ = x[ExportPowerMaxDemandL3-(139)]
+	_ = x[PowerMaxDemand-(140)]
+	_ = x[PowerMaxDemandL1-(141)]
+	_ = x[PowerMaxDemandL2-(142)]
+	_ = x[PowerMaxDemandL3-(143)]
+	_ = x[ReactiveImportPowerMaxDemand-(144)]
+	_ = x[ReactiveImportPowerMaxDemandL1-(145)]
+	_ = x[ReactiveImportPowerMaxDemandL2-(146)]
+	_ = x[ReactiveImportPowerMaxDemandL3-(147)]
+	_ = x[ReactiveExportPowerMaxDemand-(148)]
+	_ = x[ReactiveExportPowerMaxDemandL1-(149)]
+	_ = x[ReactiveExportPowerMaxDemandL2-(150)]
+	_ = x[ReactiveExportPowerMaxDemandL3-(151)]
+	_ = x[ReactivePowerMaxDemand-(152)]
+	_ = x[ReactivePowerMaxDemandL1-(153)]
+	_ = x[ReactivePowerMaxDemandL2-(154)]
+	_ = x[ReactivePowerMaxDemandL3-(155)]
+	_ = x[ReactiveQ1-(156)]
+	_ = x[ReactiveQ1L1-(157)]
+	_ = x[ReactiveQ1L2-(158)]
+	_ = x[ReactiveQ1L3-(159)]
+	_ = x[ReactiveQ2-(160)]
+	_ = x[ReactiveQ2L1-(161)]
+	_ = x[ReactiveQ2L2-(162)]
+	_ = x[ReactiveQ2L3-(163)]
+	_ = x[ReactiveQ3-(164)]
+	_ = x[ReactiveQ3L1-(165)]
+	_ = x[ReactiveQ3L2-(166)]
+	_ = x[ReactiveQ3L3-(167)]
+	_ = x[ReactiveQ4-(168)]
+	_ = x[ReactiveQ4L1-(169)]
+	_ = x[ReactiveQ4L2-(170)]
+	_ = x[ReactiveQ4L3-(171)]
+	_ = x[ResettableSum-(172)]
+	_ = x[ResettableSumL1-(173)]
+	_ = x[ResettableSumL2-(174)]
+	_ = x[ResettableSumL3-(175)]
+	_ = x[ResettableImport-(176)]
+	_ = x[ResettableImportL1-(177)]
+	_ = x[ResettableImportL2-(178)]
+	_ = x[ResettableImportL3-(179)]
+	_ = x[ResettableExport-(180)]
+	_ = x[ResettableExportL1-(181)]
+	_ = x[ResettableExportL2-(182)]
+	_ = x[ResettableExportL3-(183)]
+	_ = x[ResettableReactiveSum-(184)]
+	_ = x[ResettableReactiveSumL1-(185)]
+	_ = x[ResettableReactiveSumL2-(186)]
+	_ = x[ResettableReactiveSumL3-(187)]
+	_ = x[ResettableReactiveImport-(188)]
+	_ = x[ResettableReactiveImportL1-(189)]
+	_ = x[ResettableReactiveImportL2-(190)]
+	_ = x[ResettableReactiveImportL3-(191)]
+	_ = x[ResettableReactiveExport-(192)]
+	_ = x[ResettableReactiveExportL1-(193)]
+	_ = x[ResettableReactiveExportL2-(194)]
+	_ = x[ResettableReactiveExportL3-(195)]
 }
 
-var _MeasurementValues = []Measurement{Frequency, FrequencyL1, FrequencyL2, FrequencyL3, Current, CurrentL1, CurrentL2, CurrentL3, CurrentN, Voltage, VoltageL1, VoltageL2, VoltageL3, VoltageL1_L2, VoltageL2_L3, VoltageL3_L1, VoltageL_N_avg, VoltageL_L_avg, Power, PowerL1, PowerL2, PowerL3, ImportPower, ImportPowerL1, ImportPowerL2, ImportPowerL3, ExportPower, ExportPowerL1, ExportPowerL2, ExportPowerL3, ReactivePower, ReactivePowerL1, ReactivePowerL2, ReactivePowerL3, ApparentPower, ApparentPowerL1, ApparentPowerL2, ApparentPowerL3, Cosphi, CosphiL1, CosphiL2, CosphiL3, THD, THDL1, THDL2, THDL3, ThreePhase_Vec_A, Sum, SumT1, SumT2, SumL1, SumL2, SumL3, Import, ImportT1, ImportT2, ImportL1, ImportL2, ImportL3, Export, ExportT1, ExportT2, ExportL1, ExportL2, ExportL3, ReactiveSum, ReactiveSumT1, ReactiveSumT2, ReactiveSumL1, ReactiveSumL2, ReactiveSumL3, ReactiveImport, ReactiveImportT1, ReactiveImportT2, ReactiveImportL1, ReactiveImportL2, ReactiveImportL3, ReactiveExport, ReactiveExportT1, ReactiveExportT2, ReactiveExportL1, ReactiveExportL2, ReactiveExportL3, DCCurrent, DCVoltage, DCPower, HeatSinkTemp, CabinetTemp, DCCurrentS1, DCVoltageS1, DCPowerS1, DCEnergyS1, DCCurrentS2, DCVoltageS2, DCPowerS2, DCEnergyS2, DCCurrentS3, DCVoltageS3, DCPowerS3, DCEnergyS3, DCCurrentS4, DCVoltageS4, DCPowerS4, DCEnergyS4, ChargeState, BatteryVoltage, PhaseAngle}
+var _MeasurementValues = []Measurement{Frequency, FrequencyL1, FrequencyL2, FrequencyL3, Current, CurrentL1, CurrentL2, CurrentL3, CurrentN, Voltage, VoltageL1, VoltageL2, VoltageL3, VoltageL1_L2, VoltageL2_L3, VoltageL3_L1, VoltageL_N_avg, VoltageL_L_avg, Power, PowerL1, PowerL2, PowerL3, ImportPower, ImportPowerL1, ImportPowerL2, ImportPowerL3, ExportPower, ExportPowerL1, ExportPowerL2, ExportPowerL3, ReactivePower, ReactivePowerL1, ReactivePowerL2, ReactivePowerL3, ApparentPower, ApparentPowerL1, ApparentPowerL2, ApparentPowerL3, Cosphi, CosphiL1, CosphiL2, CosphiL3, THD, THDL1, THDL2, THDL3, ThreePhase_Vec_A, Sum, SumT1, SumT2, SumL1, SumL2, SumL3, Import, ImportT1, ImportT2, ImportL1, ImportL2, ImportL3, Export, ExportT1, ExportT2, ExportL1, ExportL2, ExportL3, ReactiveSum, ReactiveSumT1, ReactiveSumT2, ReactiveSumL1, ReactiveSumL2, ReactiveSumL3, ReactiveImport, ReactiveImportT1, ReactiveImportT2, ReactiveImportL1, ReactiveImportL2, ReactiveImportL3, ReactiveExport, ReactiveExportT1, ReactiveExportT2, ReactiveExportL1, ReactiveExportL2, ReactiveExportL3, DCCurrent, DCVoltage, DCPower, HeatSinkTemp, CabinetTemp, DCCurrentS1, DCVoltageS1, DCPowerS1, DCEnergyS1, DCCurrentS2, DCVoltageS2, DCPowerS2, DCEnergyS2, DCCurrentS3, DCVoltageS3, DCPowerS3, DCEnergyS3, DCCurrentS4, DCVoltageS4, DCPowerS4, DCEnergyS4, ChargeState, BatteryVoltage, PhaseAngle, ImportPowerDemand, ImportPowerDemandL1, ImportPowerDemandL2, ImportPowerDemandL3, ExportPowerDemand, ExportPowerDemandL1, ExportPowerDemandL2, ExportPowerDemandL3, PowerDemand, PowerDemandL1, PowerDemandL2, PowerDemandL3, ReactiveImportPowerDemand, ReactiveImportPowerDemandL1, ReactiveImportPowerDemandL2, ReactiveImportPowerDemandL3, ReactiveExportPowerDemand, ReactiveExportPowerDemandL1, ReactiveExportPowerDemandL2, ReactiveExportPowerDemandL3, ReactivePowerDemand, ReactivePowerDemandL1, ReactivePowerDemandL2, ReactivePowerDemandL3, ImportPowerMaxDemand, ImportPowerMaxDemandL1, ImportPowerMaxDemandL2, ImportPowerMaxDemandL3, ExportPowerMaxDemand, ExportPowerMaxDemandL1, ExportPowerMaxDemandL2, ExportPowerMaxDemandL3, PowerMaxDemand, PowerMaxDemandL1, PowerMaxDemandL2, PowerMaxDemandL3, ReactiveImportPowerMaxDemand, ReactiveImportPowerMaxDemandL1, ReactiveImportPowerMaxDemandL2, ReactiveImportPowerMaxDemandL3, ReactiveExportPowerMaxDemand, ReactiveExportPowerMaxDemandL1, ReactiveExportPowerMaxDemandL2, ReactiveExportPowerMaxDemandL3, ReactivePowerMaxDemand, ReactivePowerMaxDemandL1, ReactivePowerMaxDemandL2, ReactivePowerMaxDemandL3, ReactiveQ1, ReactiveQ1L1, ReactiveQ1L2, ReactiveQ1L3, ReactiveQ2, ReactiveQ2L1, ReactiveQ2L2, ReactiveQ2L3, ReactiveQ3, ReactiveQ3L1, ReactiveQ3L2, ReactiveQ3L3, ReactiveQ4, ReactiveQ4L1, ReactiveQ4L2, ReactiveQ4L3, ResettableSum, ResettableSumL1, ResettableSumL2, ResettableSumL3, ResettableImport, ResettableImportL1, ResettableImportL2, ResettableImportL3, ResettableExport, ResettableExportL1, ResettableExportL2, ResettableExportL3, ResettableReactiveSum, ResettableReactiveSumL1, ResettableReactiveSumL2, ResettableReactiveSumL3, ResettableReactiveImport, ResettableReactiveImportL1, ResettableReactiveImportL2, ResettableReactiveImportL3, ResettableReactiveExport, ResettableReactiveExportL1, ResettableReactiveExportL2, ResettableReactiveExportL3}
 
 var _MeasurementNameToValueMap = map[string]Measurement{
 	_MeasurementName[0:9]:       Frequency,
@@ -244,6 +332,94 @@ var _MeasurementNameToValueMap = map[string]Measurement{
 	_MeasurementName[1084:1095]: ChargeState,
 	_MeasurementName[1095:1109]: BatteryVoltage,
 	_MeasurementName[1109:1119]: PhaseAngle,
+	_MeasurementName[1119:1136]: ImportPowerDemand,
+	_MeasurementName[1136:1155]: ImportPowerDemandL1,
+	_MeasurementName[1155:1174]: ImportPowerDemandL2,
+	_MeasurementName[1174:1193]: ImportPowerDemandL3,
+	_MeasurementName[1193:1210]: ExportPowerDemand,
+	_MeasurementName[1210:1229]: ExportPowerDemandL1,
+	_MeasurementName[1229:1248]: ExportPowerDemandL2,
+	_MeasurementName[1248:1267]: ExportPowerDemandL3,
+	_MeasurementName[1267:1278]: PowerDemand,
+	_MeasurementName[1278:1291]: PowerDemandL1,
+	_MeasurementName[1291:1304]: PowerDemandL2,
+	_MeasurementName[1304:1317]: PowerDemandL3,
+	_MeasurementName[1317:1342]: ReactiveImportPowerDemand,
+	_MeasurementName[1342:1369]: ReactiveImportPowerDemandL1,
+	_MeasurementName[1369:1396]: ReactiveImportPowerDemandL2,
+	_MeasurementName[1396:1423]: ReactiveImportPowerDemandL3,
+	_MeasurementName[1423:1448]: ReactiveExportPowerDemand,
+	_MeasurementName[1448:1475]: ReactiveExportPowerDemandL1,
+	_MeasurementName[1475:1502]: ReactiveExportPowerDemandL2,
+	_MeasurementName[1502:1529]: ReactiveExportPowerDemandL3,
+	_MeasurementName[1529:1548]: ReactivePowerDemand,
+	_MeasurementName[1548:1569]: ReactivePowerDemandL1,
+	_MeasurementName[1569:1590]: ReactivePowerDemandL2,
+	_MeasurementName[1590:1611]: ReactivePowerDemandL3,
+	_MeasurementName[1611:1631]: ImportPowerMaxDemand,
+	_MeasurementName[1631:1653]: ImportPowerMaxDemandL1,
+	_MeasurementName[1653:1675]: ImportPowerMaxDemandL2,
+	_MeasurementName[1675:1697]: ImportPowerMaxDemandL3,
+	_MeasurementName[1697:1717]: ExportPowerMaxDemand,
+	_MeasurementName[1717:1739]: ExportPowerMaxDemandL1,
+	_MeasurementName[1739:1761]: ExportPowerMaxDemandL2,
+	_MeasurementName[1761:1783]: ExportPowerMaxDemandL3,
+	_MeasurementName[1783:1797]: PowerMaxDemand,
+	_MeasurementName[1797:1813]: PowerMaxDemandL1,
+	_MeasurementName[1813:1829]: PowerMaxDemandL2,
+	_MeasurementName[1829:1845]: PowerMaxDemandL3,
+	_MeasurementName[1845:1873]: ReactiveImportPowerMaxDemand,
+	_MeasurementName[1873:1903]: ReactiveImportPowerMaxDemandL1,
+	_MeasurementName[1903:1933]: ReactiveImportPowerMaxDemandL2,
+	_MeasurementName[1933:1963]: ReactiveImportPowerMaxDemandL3,
+	_MeasurementName[1963:1991]: ReactiveExportPowerMaxDemand,
+	_MeasurementName[1991:2021]: ReactiveExportPowerMaxDemandL1,
+	_MeasurementName[2021:2051]: ReactiveExportPowerMaxDemandL2,
+	_MeasurementName[2051:2081]: ReactiveExportPowerMaxDemandL3,
+	_MeasurementName[2081:2103]: ReactivePowerMaxDemand,
+	_MeasurementName[2103:2127]: ReactivePowerMaxDemandL1,
+	_MeasurementName[2127:2151]: ReactivePowerMaxDemandL2,
+	_MeasurementName[2151:2175]: ReactivePowerMaxDemandL3,
+	_MeasurementName[2175:2185]: ReactiveQ1,
+	_MeasurementName[2185:2197]: ReactiveQ1L1,
+	_MeasurementName[2197:2209]: ReactiveQ1L2,
+	_MeasurementName[2209:2221]: ReactiveQ1L3,
+	_MeasurementName[2221:2231]: ReactiveQ2,
+	_MeasurementName[2231:2243]: ReactiveQ2L1,
+	_MeasurementName[2243:2255]: ReactiveQ2L2,
+	_MeasurementName[2255:2267]: ReactiveQ2L3,
+	_MeasurementName[2267:2277]: ReactiveQ3,
+	_MeasurementName[2277:2289]: ReactiveQ3L1,
+	_MeasurementName[2289:2301]: ReactiveQ3L2,
+	_MeasurementName[2301:2313]: ReactiveQ3L3,
+	_MeasurementName[2313:2323]: ReactiveQ4,
+	_MeasurementName[2323:2335]: ReactiveQ4L1,
+	_MeasurementName[2335:2347]: ReactiveQ4L2,
+	_MeasurementName[2347:2359]: ReactiveQ4L3,
+	_MeasurementName[2359:2372]: ResettableSum,
+	_MeasurementName[2372:2387]: ResettableSumL1,
+	_MeasurementName[2387:2402]: ResettableSumL2,
+	_MeasurementName[2402:2417]: ResettableSumL3,
+	_MeasurementName[2417:2433]: ResettableImport,
+	_MeasurementName[2433:2451]: ResettableImportL1,
+	_MeasurementName[2451:2469]: ResettableImportL2,
+	_MeasurementName[2469:2487]: ResettableImportL3,
+	_MeasurementName[2487:2503]: ResettableExport,
+	_MeasurementName[2503:2521]: ResettableExportL1,
+	_MeasurementName[2521:2539]: ResettableExportL2,
+	_MeasurementName[2539:2557]: ResettableExportL3,
+	_MeasurementName[2557:2578]: ResettableReactiveSum,
+	_MeasurementName[2578:2601]: ResettableReactiveSumL1,
+	_MeasurementName[2601:2624]: ResettableReactiveSumL2,
+	_MeasurementName[2624:2647]: ResettableReactiveSumL3,
+	_MeasurementName[2647:2671]: ResettableReactiveImport,
+	_MeasurementName[2671:2697]: ResettableReactiveImportL1,
+	_MeasurementName[2697:2723]: ResettableReactiveImportL2,
+	_MeasurementName[2723:2749]: ResettableReactiveImportL3,
+	_MeasurementName[2749:2773]: ResettableReactiveExport,
+	_MeasurementName[2773:2799]: ResettableReactiveExportL1,
+	_MeasurementName[2799:2825]: ResettableReactiveExportL2,
+	_MeasurementName[2825:2851]: ResettableReactiveExportL3,
 }
 
 var _MeasurementLowerNameToValueMap = map[string]Measurement{
@@ -354,6 +530,94 @@ var _MeasurementLowerNameToValueMap = map[string]Measurement{
 	_MeasurementLowerName[1084:1095]: ChargeState,
 	_MeasurementLowerName[1095:1109]: BatteryVoltage,
 	_MeasurementLowerName[1109:1119]: PhaseAngle,
+	_MeasurementLowerName[1119:1136]: ImportPowerDemand,
+	_MeasurementLowerName[1136:1155]: ImportPowerDemandL1,
+	_MeasurementLowerName[1155:1174]: ImportPowerDemandL2,
+	_MeasurementLowerName[1174:1193]: ImportPowerDemandL3,
+	_MeasurementLowerName[1193:1210]: ExportPowerDemand,
+	_MeasurementLowerName[1210:1229]: ExportPowerDemandL1,
+	_MeasurementLowerName[1229:1248]: ExportPowerDemandL2,
+	_MeasurementLowerName[1248:1267]: ExportPowerDemandL3,
+	_MeasurementLowerName[1267:1278]: PowerDemand,
+	_MeasurementLowerName[1278:1291]: PowerDemandL1,
+	_MeasurementLowerName[1291:1304]: PowerDemandL2,
+	_MeasurementLowerName[1304:1317]: PowerDemandL3,
+	_MeasurementLowerName[1317:1342]: ReactiveImportPowerDemand,
+	_MeasurementLowerName[1342:1369]: ReactiveImportPowerDemandL1,
+	_MeasurementLowerName[1369:1396]: ReactiveImportPowerDemandL2,
+	_MeasurementLowerName[1396:1423]: ReactiveImportPowerDemandL3,
+	_MeasurementLowerName[1423:1448]: ReactiveExportPowerDemand,
+	_MeasurementLowerName[1448:1475]: ReactiveExportPowerDemandL1,
+	_MeasurementLowerName[1475:1502]: ReactiveExportPowerDemandL2,
+	_MeasurementLowerName[1502:1529]: ReactiveExportPowerDemandL3,
+	_MeasurementLowerName[1529:1548]: ReactivePowerDemand,
+	_MeasurementLowerName[1548:1569]: ReactivePowerDemandL1,
+	_MeasurementLowerName[1569:1590]: ReactivePowerDemandL2,
+	_MeasurementLowerName[1590:1611]: ReactivePowerDemandL3,
+	_MeasurementLowerName[1611:1631]: ImportPowerMaxDemand,
+	_MeasurementLowerName[1631:1653]: ImportPowerMaxDemandL1,
+	_MeasurementLowerName[1653:1675]: ImportPowerMaxDemandL2,
+	_MeasurementLowerName[1675:1697]: ImportPowerMaxDemandL3,
+	_MeasurementLowerName[1697:1717]: ExportPowerMaxDemand,
+	_MeasurementLowerName[1717:1739]: ExportPowerMaxDemandL1,
+	_MeasurementLowerName[1739:1761]: ExportPowerMaxDemandL2,
+	_MeasurementLowerName[1761:1783]: ExportPowerMaxDemandL3,
+	_MeasurementLowerName[1783:1797]: PowerMaxDemand,
+	_MeasurementLowerName[1797:1813]: PowerMaxDemandL1,
+	_MeasurementLowerName[1813:1829]: PowerMaxDemandL2,
+	_MeasurementLowerName[1829:1845]: PowerMaxDemandL3,
+	_MeasurementLowerName[1845:1873]: ReactiveImportPowerMaxDemand,
+	_MeasurementLowerName[1873:1903]: ReactiveImportPowerMaxDemandL1,
+	_MeasurementLowerName[1903:1933]: ReactiveImportPowerMaxDemandL2,
+	_MeasurementLowerName[1933:1963]: ReactiveImportPowerMaxDemandL3,
+	_MeasurementLowerName[1963:1991]: ReactiveExportPowerMaxDemand,
+	_MeasurementLowerName[1991:2021]: ReactiveExportPowerMaxDemandL1,
+	_MeasurementLowerName[2021:2051]: ReactiveExportPowerMaxDemandL2,
+	_MeasurementLowerName[2051:2081]: ReactiveExportPowerMaxDemandL3,
+	_MeasurementLowerName[2081:2103]: ReactivePowerMaxDemand,
+	_MeasurementLowerName[2103:2127]: ReactivePowerMaxDemandL1,
+	_MeasurementLowerName[2127:2151]: ReactivePowerMaxDemandL2,
+	_MeasurementLowerName[2151:2175]: ReactivePowerMaxDemandL3,
+	_MeasurementLowerName[2175:2185]: ReactiveQ1,
+	_MeasurementLowerName[2185:2197]: ReactiveQ1L1,
+	_MeasurementLowerName[2197:2209]: ReactiveQ1L2,
+	_MeasurementLowerName[2209:2221]: ReactiveQ1L3,
+	_MeasurementLowerName[2221:2231]: ReactiveQ2,
+	_MeasurementLowerName[2231:2243]: ReactiveQ2L1,
+	_MeasurementLowerName[2243:2255]: ReactiveQ2L2,
+	_MeasurementLowerName[2255:2267]: ReactiveQ2L3,
+	_MeasurementLowerName[2267:2277]: ReactiveQ3,
+	_MeasurementLowerName[2277:2289]: ReactiveQ3L1,
+	_MeasurementLowerName[2289:2301]: ReactiveQ3L2,
+	_MeasurementLowerName[2301:2313]: ReactiveQ3L3,
+	_MeasurementLowerName[2313:2323]: ReactiveQ4,
+	_MeasurementLowerName[2323:2335]: ReactiveQ4L1,
+	_MeasurementLowerName[2335:2347]: ReactiveQ4L2,
+	_MeasurementLowerName[2347:2359]: ReactiveQ4L3,
+	_MeasurementLowerName[2359:2372]: ResettableSum,
+	_MeasurementLowerName[2372:2387]: ResettableSumL1,
+	_MeasurementLowerName[2387:2402]: ResettableSumL2,
+	_MeasurementLowerName[2402:2417]: ResettableSumL3,
+	_MeasurementLowerName[2417:2433]: ResettableImport,
+	_MeasurementLowerName[2433:2451]: ResettableImportL1,
+	_MeasurementLowerName[2451:2469]: ResettableImportL2,
+	_MeasurementLowerName[2469:2487]: ResettableImportL3,
+	_MeasurementLowerName[2487:2503]: ResettableExport,
+	_MeasurementLowerName[2503:2521]: ResettableExportL1,
+	_MeasurementLowerName[2521:2539]: ResettableExportL2,
+	_MeasurementLowerName[2539:2557]: ResettableExportL3,
+	_MeasurementLowerName[2557:2578]: ResettableReactiveSum,
+	_MeasurementLowerName[2578:2601]: ResettableReactiveSumL1,
+	_MeasurementLowerName[2601:2624]: ResettableReactiveSumL2,
+	_MeasurementLowerName[2624:2647]: ResettableReactiveSumL3,
+	_MeasurementLowerName[2647:2671]: ResettableReactiveImport,
+	_MeasurementLowerName[2671:2697]: ResettableReactiveImportL1,
+	_MeasurementLowerName[2697:2723]: ResettableReactiveImportL2,
+	_MeasurementLowerName[2723:2749]: ResettableReactiveImportL3,
+	_MeasurementLowerName[2749:2773]: ResettableReactiveExport,
+	_MeasurementLowerName[2773:2799]: ResettableReactiveExportL1,
+	_MeasurementLowerName[2799:2825]: ResettableReactiveExportL2,
+	_MeasurementLowerName[2825:2851]: ResettableReactiveExportL3,
 }
 
 var _MeasurementNames = []string{
@@ -464,6 +728,94 @@ var _MeasurementNames = []string{
 	_MeasurementName[1084:1095],
 	_MeasurementName[1095:1109],
 	_MeasurementName[1109:1119],
+	_MeasurementName[1119:1136],
+	_MeasurementName[1136:1155],
+	_MeasurementName[1155:1174],
+	_MeasurementName[1174:1193],
+	_MeasurementName[1193:1210],
+	_MeasurementName[1210:1229],
+	_MeasurementName[1229:1248],
+	_MeasurementName[1248:1267],
+	_MeasurementName[1267:1278],
+	_MeasurementName[1278:1291],
+	_MeasurementName[1291:1304],
+	_MeasurementName[1304:1317],
+	_MeasurementName[1317:1342],
+	_MeasurementName[1342:1369],
+	_MeasurementName[1369:1396],
+	_MeasurementName[1396:1423],
+	_MeasurementName[1423:1448],
+	_MeasurementName[1448:1475],
+	_MeasurementName[1475:1502],
+	_MeasurementName[1502:1529],
+	_MeasurementName[1529:1548],
+	_MeasurementName[1548:1569],
+	_MeasurementName[1569:1590],
+	_MeasurementName[1590:1611],
+	_MeasurementName[1611:1631],
+	_MeasurementName[1631:1653],
+	_MeasurementName[1653:1675],
+	_MeasurementName[1675:1697],
+	_MeasurementName[1697:1717],
+	_MeasurementName[1717:1739],
+	_MeasurementName[1739:1761],
+	_MeasurementName[1761:1783],
+	_MeasurementName[1783:1797],
+	_MeasurementName[1797:1813],
+	_MeasurementName[1813:1829],
+	_MeasurementName[1829:1845],
+	_MeasurementName[1845:1873],
+	_MeasurementName[1873:1903],
+	_MeasurementName[1903:1933],
+	_MeasurementName[1933:1963],
+	_MeasurementName[1963:1991],
+	_MeasurementName[1991:2021],
+	_MeasurementName[2021:2051],
+	_MeasurementName[2051:2081],
+	_MeasurementName[2081:2103],
+	_MeasurementName[2103:2127],
+	_MeasurementName[2127:2151],
+	_MeasurementName[2151:2175],
+	_MeasurementName[2175:2185],
+	_MeasurementName[2185:2197],
+	_MeasurementName[2197:2209],
+	_MeasurementName[2209:2221],
+	_MeasurementName[2221:2231],
+	_MeasurementName[2231:2243],
+	_MeasurementName[2243:2255],
+	_MeasurementName[2255:2267],
+	_MeasurementName[2267:2277],
+	_MeasurementName[2277:2289],
+	_MeasurementName[2289:2301],
+	_MeasurementName[2301:2313],
+	_MeasurementName[2313:2323],
+	_MeasurementName[2323:2335],
+	_MeasurementName[2335:2347],
+	_MeasurementName[2347:2359],
+	_MeasurementName[2359:2372],
+	_MeasurementName[2372:2387],
+	_MeasurementName[2387:2402],
+	_MeasurementName[2402:2417],
+	_MeasurementName[2417:2433],
+	_MeasurementName[2433:2451],
+	_MeasurementName[2451:2469],
+	_MeasurementName[2469:2487],
+	_MeasurementName[2487:2503],
+	_MeasurementName[2503:2521],
+	_MeasurementName[2521:2539],
+	_MeasurementName[2539:2557],
+	_MeasurementName[2557:2578],
+	_MeasurementName[2578:2601],
+	_MeasurementName[2601:2624],
+	_MeasurementName[2624:2647],
+	_MeasurementName[2647:2671],
+	_MeasurementName[2671:2697],
+	_MeasurementName[2697:2723],
+	_MeasurementName[2723:2749],
+	_MeasurementName[2749:2773],
+	_MeasurementName[2773:2799],
+	_MeasurementName[2799:2825],
+	_MeasurementName[2825:2851],
 }
 
 // MeasurementString retrieves an enum value from the enum constants string name.

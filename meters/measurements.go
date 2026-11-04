@@ -156,6 +156,100 @@ const (
 	BatteryVoltage
 
 	PhaseAngle
+
+	// Demand: average power over the meter's demand period, and its maximum since the last reset
+	ImportPowerDemand
+	ImportPowerDemandL1
+	ImportPowerDemandL2
+	ImportPowerDemandL3
+	ExportPowerDemand
+	ExportPowerDemandL1
+	ExportPowerDemandL2
+	ExportPowerDemandL3
+	PowerDemand
+	PowerDemandL1
+	PowerDemandL2
+	PowerDemandL3
+	ReactiveImportPowerDemand
+	ReactiveImportPowerDemandL1
+	ReactiveImportPowerDemandL2
+	ReactiveImportPowerDemandL3
+	ReactiveExportPowerDemand
+	ReactiveExportPowerDemandL1
+	ReactiveExportPowerDemandL2
+	ReactiveExportPowerDemandL3
+	ReactivePowerDemand
+	ReactivePowerDemandL1
+	ReactivePowerDemandL2
+	ReactivePowerDemandL3
+	ImportPowerMaxDemand
+	ImportPowerMaxDemandL1
+	ImportPowerMaxDemandL2
+	ImportPowerMaxDemandL3
+	ExportPowerMaxDemand
+	ExportPowerMaxDemandL1
+	ExportPowerMaxDemandL2
+	ExportPowerMaxDemandL3
+	PowerMaxDemand
+	PowerMaxDemandL1
+	PowerMaxDemandL2
+	PowerMaxDemandL3
+	ReactiveImportPowerMaxDemand
+	ReactiveImportPowerMaxDemandL1
+	ReactiveImportPowerMaxDemandL2
+	ReactiveImportPowerMaxDemandL3
+	ReactiveExportPowerMaxDemand
+	ReactiveExportPowerMaxDemandL1
+	ReactiveExportPowerMaxDemandL2
+	ReactiveExportPowerMaxDemandL3
+	ReactivePowerMaxDemand
+	ReactivePowerMaxDemandL1
+	ReactivePowerMaxDemandL2
+	ReactivePowerMaxDemandL3
+
+	// Reactive energy per quadrant
+	ReactiveQ1
+	ReactiveQ1L1
+	ReactiveQ1L2
+	ReactiveQ1L3
+	ReactiveQ2
+	ReactiveQ2L1
+	ReactiveQ2L2
+	ReactiveQ2L3
+	ReactiveQ3
+	ReactiveQ3L1
+	ReactiveQ3L2
+	ReactiveQ3L3
+	ReactiveQ4
+	ReactiveQ4L1
+	ReactiveQ4L2
+	ReactiveQ4L3
+
+	// Resettable energy counters
+	ResettableSum
+	ResettableSumL1
+	ResettableSumL2
+	ResettableSumL3
+	ResettableImport
+	ResettableImportL1
+	ResettableImportL2
+	ResettableImportL3
+	ResettableExport
+	ResettableExportL1
+	ResettableExportL2
+	ResettableExportL3
+	ResettableReactiveSum
+	ResettableReactiveSumL1
+	ResettableReactiveSumL2
+	ResettableReactiveSumL3
+	ResettableReactiveImport
+	ResettableReactiveImportL1
+	ResettableReactiveImportL2
+	ResettableReactiveImportL3
+	ResettableReactiveExport
+	ResettableReactiveExportL1
+	ResettableReactiveExportL2
+	ResettableReactiveExportL3
 )
 
 var iec = map[Measurement][]string{
@@ -266,6 +360,97 @@ var iec = map[Measurement][]string{
 	ChargeState:      {"Charge State", "%"},
 	BatteryVoltage:   {"Battery Voltage", "V"},
 	PhaseAngle:       {"Phase Angle", "°"},
+
+	ImportPowerDemand:              {"Import Power Demand", "W"},
+	ImportPowerDemandL1:            {"L1 Import Power Demand", "W"},
+	ImportPowerDemandL2:            {"L2 Import Power Demand", "W"},
+	ImportPowerDemandL3:            {"L3 Import Power Demand", "W"},
+	ExportPowerDemand:              {"Export Power Demand", "W"},
+	ExportPowerDemandL1:            {"L1 Export Power Demand", "W"},
+	ExportPowerDemandL2:            {"L2 Export Power Demand", "W"},
+	ExportPowerDemandL3:            {"L3 Export Power Demand", "W"},
+	PowerDemand:                    {"Power Demand", "W"},
+	PowerDemandL1:                  {"L1 Power Demand", "W"},
+	PowerDemandL2:                  {"L2 Power Demand", "W"},
+	PowerDemandL3:                  {"L3 Power Demand", "W"},
+	ReactiveImportPowerDemand:      {"Reactive Import Power Demand", "var"},
+	ReactiveImportPowerDemandL1:    {"L1 Reactive Import Power Demand", "var"},
+	ReactiveImportPowerDemandL2:    {"L2 Reactive Import Power Demand", "var"},
+	ReactiveImportPowerDemandL3:    {"L3 Reactive Import Power Demand", "var"},
+	ReactiveExportPowerDemand:      {"Reactive Export Power Demand", "var"},
+	ReactiveExportPowerDemandL1:    {"L1 Reactive Export Power Demand", "var"},
+	ReactiveExportPowerDemandL2:    {"L2 Reactive Export Power Demand", "var"},
+	ReactiveExportPowerDemandL3:    {"L3 Reactive Export Power Demand", "var"},
+	ReactivePowerDemand:            {"Reactive Power Demand", "var"},
+	ReactivePowerDemandL1:          {"L1 Reactive Power Demand", "var"},
+	ReactivePowerDemandL2:          {"L2 Reactive Power Demand", "var"},
+	ReactivePowerDemandL3:          {"L3 Reactive Power Demand", "var"},
+	ImportPowerMaxDemand:           {"Import Power Maximum Demand", "W"},
+	ImportPowerMaxDemandL1:         {"L1 Import Power Maximum Demand", "W"},
+	ImportPowerMaxDemandL2:         {"L2 Import Power Maximum Demand", "W"},
+	ImportPowerMaxDemandL3:         {"L3 Import Power Maximum Demand", "W"},
+	ExportPowerMaxDemand:           {"Export Power Maximum Demand", "W"},
+	ExportPowerMaxDemandL1:         {"L1 Export Power Maximum Demand", "W"},
+	ExportPowerMaxDemandL2:         {"L2 Export Power Maximum Demand", "W"},
+	ExportPowerMaxDemandL3:         {"L3 Export Power Maximum Demand", "W"},
+	PowerMaxDemand:                 {"Power Maximum Demand", "W"},
+	PowerMaxDemandL1:               {"L1 Power Maximum Demand", "W"},
+	PowerMaxDemandL2:               {"L2 Power Maximum Demand", "W"},
+	PowerMaxDemandL3:               {"L3 Power Maximum Demand", "W"},
+	ReactiveImportPowerMaxDemand:   {"Reactive Import Power Maximum Demand", "var"},
+	ReactiveImportPowerMaxDemandL1: {"L1 Reactive Import Power Maximum Demand", "var"},
+	ReactiveImportPowerMaxDemandL2: {"L2 Reactive Import Power Maximum Demand", "var"},
+	ReactiveImportPowerMaxDemandL3: {"L3 Reactive Import Power Maximum Demand", "var"},
+	ReactiveExportPowerMaxDemand:   {"Reactive Export Power Maximum Demand", "var"},
+	ReactiveExportPowerMaxDemandL1: {"L1 Reactive Export Power Maximum Demand", "var"},
+	ReactiveExportPowerMaxDemandL2: {"L2 Reactive Export Power Maximum Demand", "var"},
+	ReactiveExportPowerMaxDemandL3: {"L3 Reactive Export Power Maximum Demand", "var"},
+	ReactivePowerMaxDemand:         {"Reactive Power Maximum Demand", "var"},
+	ReactivePowerMaxDemandL1:       {"L1 Reactive Power Maximum Demand", "var"},
+	ReactivePowerMaxDemandL2:       {"L2 Reactive Power Maximum Demand", "var"},
+	ReactivePowerMaxDemandL3:       {"L3 Reactive Power Maximum Demand", "var"},
+
+	ReactiveQ1:   {"Q1 Reactive", "kvarh"},
+	ReactiveQ1L1: {"L1 Q1 Reactive", "kvarh"},
+	ReactiveQ1L2: {"L2 Q1 Reactive", "kvarh"},
+	ReactiveQ1L3: {"L3 Q1 Reactive", "kvarh"},
+	ReactiveQ2:   {"Q2 Reactive", "kvarh"},
+	ReactiveQ2L1: {"L1 Q2 Reactive", "kvarh"},
+	ReactiveQ2L2: {"L2 Q2 Reactive", "kvarh"},
+	ReactiveQ2L3: {"L3 Q2 Reactive", "kvarh"},
+	ReactiveQ3:   {"Q3 Reactive", "kvarh"},
+	ReactiveQ3L1: {"L1 Q3 Reactive", "kvarh"},
+	ReactiveQ3L2: {"L2 Q3 Reactive", "kvarh"},
+	ReactiveQ3L3: {"L3 Q3 Reactive", "kvarh"},
+	ReactiveQ4:   {"Q4 Reactive", "kvarh"},
+	ReactiveQ4L1: {"L1 Q4 Reactive", "kvarh"},
+	ReactiveQ4L2: {"L2 Q4 Reactive", "kvarh"},
+	ReactiveQ4L3: {"L3 Q4 Reactive", "kvarh"},
+
+	ResettableSum:              {"Resettable Sum", "kWh"},
+	ResettableSumL1:            {"L1 Resettable Sum", "kWh"},
+	ResettableSumL2:            {"L2 Resettable Sum", "kWh"},
+	ResettableSumL3:            {"L3 Resettable Sum", "kWh"},
+	ResettableImport:           {"Resettable Import", "kWh"},
+	ResettableImportL1:         {"L1 Resettable Import", "kWh"},
+	ResettableImportL2:         {"L2 Resettable Import", "kWh"},
+	ResettableImportL3:         {"L3 Resettable Import", "kWh"},
+	ResettableExport:           {"Resettable Export", "kWh"},
+	ResettableExportL1:         {"L1 Resettable Export", "kWh"},
+	ResettableExportL2:         {"L2 Resettable Export", "kWh"},
+	ResettableExportL3:         {"L3 Resettable Export", "kWh"},
+	ResettableReactiveSum:      {"Resettable Reactive Sum", "kvarh"},
+	ResettableReactiveSumL1:    {"L1 Resettable Reactive Sum", "kvarh"},
+	ResettableReactiveSumL2:    {"L2 Resettable Reactive Sum", "kvarh"},
+	ResettableReactiveSumL3:    {"L3 Resettable Reactive Sum", "kvarh"},
+	ResettableReactiveImport:   {"Resettable Reactive Import", "kvarh"},
+	ResettableReactiveImportL1: {"L1 Resettable Reactive Import", "kvarh"},
+	ResettableReactiveImportL2: {"L2 Resettable Reactive Import", "kvarh"},
+	ResettableReactiveImportL3: {"L3 Resettable Reactive Import", "kvarh"},
+	ResettableReactiveExport:   {"Resettable Reactive Export", "kvarh"},
+	ResettableReactiveExportL1: {"L1 Resettable Reactive Export", "kvarh"},
+	ResettableReactiveExportL2: {"L2 Resettable Reactive Export", "kvarh"},
+	ResettableReactiveExportL3: {"L3 Resettable Reactive Export", "kvarh"},
 }
 
 // MarshalText implements encoding.TextMarshaler
