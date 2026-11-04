@@ -387,3 +387,25 @@ func TestQueryIdentityGivesUpAfterTimeouts(t *testing.T) {
 	assert.Equal(t, "1234", d.Descriptor().Serial)
 	assert.Empty(t, d.failures)
 }
+
+func TestReadDetailsReplacesPreviousDevice(t *testing.T) {
+	d := newDevice("test", &testIdentityProducer{testProducer{ops: []Operation{newTestOp(VoltageL1, 1)}}})
+
+	// first device on the bus
+	first := &identityClient{
+		testClient: *newTestClient(nil),
+		data:       map[uint16][]byte{0x1000: {0x11, 0x11}, 0x2000: {0x01, 0x00}},
+	}
+	d.ReadDetails(first)
+	assert.Equal(t, "1111", d.Descriptor().Serial)
+	assert.Equal(t, "0100", d.Descriptor().Version)
+
+	// second device with the same type, it does not support the version
+	second := &identityClient{
+		testClient: *newTestClient(map[uint16]error{0x2000: rejected}),
+		data:       map[uint16][]byte{0x1000: {0x22, 0x22}, 0x2000: {0x02, 0x00}},
+	}
+	d.ReadDetails(second)
+	assert.Equal(t, "2222", d.Descriptor().Serial)
+	assert.Equal(t, "", d.Descriptor().Version, "no version left over from the first device")
+}

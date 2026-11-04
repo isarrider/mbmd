@@ -186,6 +186,25 @@ func (d *RS485) identify(client modbus.Client) {
 	}
 }
 
+// ReadDetails reads the device details of an IdentityProducer right away and
+// replaces the ones read before. Scan uses it, because there one device object
+// probes every bus address.
+func (d *RS485) ReadDetails(client modbus.Client) {
+	d.mu.Lock()
+	d.details = meters.DeviceDescriptor{}
+	d.mu.Unlock()
+
+	// identity failures use measurement zero, see identify
+	for key := range d.failures {
+		if key.iec == 0 {
+			delete(d.failures, key)
+		}
+	}
+
+	d.identity = nil
+	d.identify(client)
+}
+
 // readRegisters reads length registers and checks the response size
 func readRegisters(client modbus.Client, funcCode uint8, start, length uint16) (b []byte, err error) {
 	switch funcCode {

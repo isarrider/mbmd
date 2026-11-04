@@ -5,8 +5,10 @@ import (
 	"fmt"
 	golog "log"
 	"os"
+	"sort"
 	"time"
 
+	"github.com/grid-x/modbus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -91,7 +93,8 @@ func scan(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	deviceList := make(map[int]meters.Device)
+	// descriptors are kept per address, since one device object probes all addresses
+	deviceList := make(map[int]meters.DeviceDescriptor)
 	log.Printf("starting bus scan on %s", adapter)
 
 	// validate against 110V and 230V to make detection reliable
@@ -121,7 +124,12 @@ SCAN:
 					mr.Value,
 				)
 
-				deviceList[deviceID] = dev
+				// read serial number and version where the device type supports it
+				if d, ok := dev.(interface{ ReadDetails(modbus.Client) }); ok {
+					d.ReadDetails(client)
+				}
+
+				deviceList[deviceID] = dev.Descriptor()
 				continue SCAN
 			}
 		}
@@ -130,8 +138,15 @@ SCAN:
 	}
 
 	log.Printf("found %d active devices:\r\n", len(deviceList))
-	for deviceID, dev := range deviceList {
-		desc := dev.Descriptor()
+
+	ids := make([]int, 0, len(deviceList))
+	for deviceID := range deviceList {
+		ids = append(ids, deviceID)
+	}
+	sort.Ints(ids)
+
+	for _, deviceID := range ids {
+		desc := deviceList[deviceID]
 
 		s := ""
 		addDesc(&s, "Model", desc.Model)
