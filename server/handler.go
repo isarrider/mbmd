@@ -93,6 +93,11 @@ func (h *Handler) initializeDevice(
 ) (*RuntimeInfo, error) {
 	deviceID := h.deviceID(id, dev)
 
+	// let the device use its id in log messages
+	if d, ok := dev.(interface{ SetID(string) }); ok {
+		d.SetID(deviceID)
+	}
+
 	if err := dev.Initialize(h.Manager.Conn.ModbusClient()); err != nil {
 		if !errors.Is(err, meters.ErrPartiallyOpened) {
 			log.Printf("initializing device %s failed: %v", deviceID, err)

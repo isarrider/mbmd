@@ -74,12 +74,119 @@ func NewDS100Producer() Producer {
 		ReactiveSumL2:    0x0582, // B phase total reactive energy
 		ReactiveSumL3:    0x05E6, // C phase total reactive energy
 		ReactiveSum:      0x0140, // total reactive energy
+
+		// demand over the demand period (register 0x1011, default 15 minutes), 0.1 W / 0.1 var
+		ImportPowerDemandL1:         0x043A, // A phase forward active demand
+		ImportPowerDemandL2:         0x043C,
+		ImportPowerDemandL3:         0x043E,
+		ImportPowerDemand:           0x0440,
+		ExportPowerDemandL1:         0x0442, // A phase reverse active demand
+		ExportPowerDemandL2:         0x0444,
+		ExportPowerDemandL3:         0x0446,
+		ExportPowerDemand:           0x0448,
+		PowerDemandL1:               0x044A, // A phase total active demand
+		PowerDemandL2:               0x044C,
+		PowerDemandL3:               0x044E,
+		PowerDemand:                 0x0450,
+		ReactiveImportPowerDemandL1: 0x0452, // A phase forward reactive demand
+		ReactiveImportPowerDemandL2: 0x0454,
+		ReactiveImportPowerDemandL3: 0x0456,
+		ReactiveImportPowerDemand:   0x0458,
+		ReactiveExportPowerDemandL1: 0x045A, // A phase reverse reactive demand
+		ReactiveExportPowerDemandL2: 0x045C,
+		ReactiveExportPowerDemandL3: 0x045E,
+		ReactiveExportPowerDemand:   0x0460,
+		ReactivePowerDemandL1:       0x0462, // A phase total reactive demand
+		ReactivePowerDemandL2:       0x0464,
+		ReactivePowerDemandL3:       0x0466,
+		ReactivePowerDemand:         0x0468,
+
+		// maximum demand since the demand values were last cleared, 0.1 W / 0.1 var
+		ImportPowerMaxDemandL1:         0x046A, // A phase forward active maximum demand
+		ImportPowerMaxDemandL2:         0x046C,
+		ImportPowerMaxDemandL3:         0x046E,
+		ImportPowerMaxDemand:           0x0470,
+		ExportPowerMaxDemandL1:         0x0472, // A phase reverse active maximum demand
+		ExportPowerMaxDemandL2:         0x0474,
+		ExportPowerMaxDemandL3:         0x0476,
+		ExportPowerMaxDemand:           0x0478,
+		PowerMaxDemandL1:               0x047A, // A phase total active maximum demand
+		PowerMaxDemandL2:               0x047C,
+		PowerMaxDemandL3:               0x047E,
+		PowerMaxDemand:                 0x0480,
+		ReactiveImportPowerMaxDemandL1: 0x0482, // A phase forward reactive maximum demand
+		ReactiveImportPowerMaxDemandL2: 0x0484,
+		ReactiveImportPowerMaxDemandL3: 0x0486,
+		ReactiveImportPowerMaxDemand:   0x0488,
+		ReactiveExportPowerMaxDemandL1: 0x048A, // A phase reverse reactive maximum demand
+		ReactiveExportPowerMaxDemandL2: 0x048C,
+		ReactiveExportPowerMaxDemandL3: 0x048E,
+		ReactiveExportPowerMaxDemand:   0x0490,
+		ReactivePowerMaxDemandL1:       0x0492, // A phase total reactive maximum demand
+		ReactivePowerMaxDemandL2:       0x0494,
+		ReactivePowerMaxDemandL3:       0x0496,
+		ReactivePowerMaxDemand:         0x0498,
+
+		// reactive energy per quadrant, 0.01 kvarh
+		ReactiveQ1:   0x014A, // first quadrant total reactive energy
+		ReactiveQ2:   0x0154,
+		ReactiveQ3:   0x015E,
+		ReactiveQ4:   0x0168,
+		ReactiveQ1L1: 0x053C, // A phase first quadrant total reactive energy
+		ReactiveQ2L1: 0x0546,
+		ReactiveQ3L1: 0x0550,
+		ReactiveQ4L1: 0x055A,
+		ReactiveQ1L2: 0x05A0, // B phase first quadrant total reactive energy
+		ReactiveQ2L2: 0x05AA,
+		ReactiveQ3L2: 0x05B4,
+		ReactiveQ4L2: 0x05BE,
+		ReactiveQ1L3: 0x0604, // C phase first quadrant total reactive energy
+		ReactiveQ2L3: 0x060E,
+		ReactiveQ3L3: 0x0618,
+		ReactiveQ4L3: 0x0622,
+
+		// resettable energy counters, 0.01 kWh / 0.01 kvarh
+		ResettableSum:              0x062C, // active resettable energy
+		ResettableImport:           0x062E, // forward active resettable energy
+		ResettableExport:           0x0630, // reverse active resettable energy
+		ResettableSumL1:            0x0632,
+		ResettableImportL1:         0x0634,
+		ResettableExportL1:         0x0636,
+		ResettableSumL2:            0x0638,
+		ResettableImportL2:         0x063A,
+		ResettableExportL2:         0x063C,
+		ResettableSumL3:            0x063E,
+		ResettableImportL3:         0x0640,
+		ResettableExportL3:         0x0642,
+		ResettableReactiveSum:      0x0644, // reactive resettable energy
+		ResettableReactiveImport:   0x0646, // forward reactive resettable energy
+		ResettableReactiveExport:   0x0648, // reverse reactive resettable energy
+		ResettableReactiveSumL1:    0x064A,
+		ResettableReactiveImportL1: 0x064C,
+		ResettableReactiveExportL1: 0x064E,
+		ResettableReactiveSumL2:    0x0650,
+		ResettableReactiveImportL2: 0x0652,
+		ResettableReactiveExportL2: 0x0654,
+		ResettableReactiveSumL3:    0x0656,
+		ResettableReactiveImportL3: 0x0658,
+		ResettableReactiveExportL3: 0x065A,
 	}
 	return &DS100Producer{Opcodes: ops}
 }
 
 func (p *DS100Producer) Description() string {
 	return "B+G e-tech DS100"
+}
+
+// MaxBlockLen implements BlockProducer. The manual allows reading up to 100 registers at once.
+func (p *DS100Producer) MaxBlockLen() uint16 {
+	return 100
+}
+
+// MaxBlockGap implements BlockProducer. It bridges the T1-T4 tariff registers
+// between the energy totals, so each energy block is read in one request.
+func (p *DS100Producer) MaxBlockGap() uint16 {
+	return 8
 }
 
 func (p *DS100Producer) snip(iec Measurement, readlen uint16, transform RTUTransform, scaler ...float64) Operation {
@@ -167,6 +274,52 @@ func (p *DS100Producer) Produce() (res []Operation) {
 		ReactiveSumL1, ReactiveSumL2, ReactiveSumL3, ReactiveSum,
 	} {
 		res = append(res, p.snip32s(op, 100))
+	}
+
+	// reactive energy per quadrant and resettable counters for import and export
+	for _, op := range []Measurement{
+		ReactiveQ1L1, ReactiveQ1L2, ReactiveQ1L3, ReactiveQ1,
+		ReactiveQ2L1, ReactiveQ2L2, ReactiveQ2L3, ReactiveQ2,
+		ReactiveQ3L1, ReactiveQ3L2, ReactiveQ3L3, ReactiveQ3,
+		ReactiveQ4L1, ReactiveQ4L2, ReactiveQ4L3, ReactiveQ4,
+		ResettableImportL1, ResettableImportL2, ResettableImportL3, ResettableImport,
+		ResettableExportL1, ResettableExportL2, ResettableExportL3, ResettableExport,
+		ResettableReactiveImportL1, ResettableReactiveImportL2, ResettableReactiveImportL3, ResettableReactiveImport,
+		ResettableReactiveExportL1, ResettableReactiveExportL2, ResettableReactiveExportL3, ResettableReactiveExport,
+	} {
+		res = append(res, p.snip32u(op, 100))
+	}
+
+	// resettable totals follow the combination code like the other totals
+	for _, op := range []Measurement{
+		ResettableSumL1, ResettableSumL2, ResettableSumL3, ResettableSum,
+		ResettableReactiveSumL1, ResettableReactiveSumL2, ResettableReactiveSumL3, ResettableReactiveSum,
+	} {
+		res = append(res, p.snip32s(op, 100))
+	}
+
+	// demand for import and export
+	for _, op := range []Measurement{
+		ImportPowerDemandL1, ImportPowerDemandL2, ImportPowerDemandL3, ImportPowerDemand,
+		ExportPowerDemandL1, ExportPowerDemandL2, ExportPowerDemandL3, ExportPowerDemand,
+		ReactiveImportPowerDemandL1, ReactiveImportPowerDemandL2, ReactiveImportPowerDemandL3, ReactiveImportPowerDemand,
+		ReactiveExportPowerDemandL1, ReactiveExportPowerDemandL2, ReactiveExportPowerDemandL3, ReactiveExportPowerDemand,
+		ImportPowerMaxDemandL1, ImportPowerMaxDemandL2, ImportPowerMaxDemandL3, ImportPowerMaxDemand,
+		ExportPowerMaxDemandL1, ExportPowerMaxDemandL2, ExportPowerMaxDemandL3, ExportPowerMaxDemand,
+		ReactiveImportPowerMaxDemandL1, ReactiveImportPowerMaxDemandL2, ReactiveImportPowerMaxDemandL3, ReactiveImportPowerMaxDemand,
+		ReactiveExportPowerMaxDemandL1, ReactiveExportPowerMaxDemandL2, ReactiveExportPowerMaxDemandL3, ReactiveExportPowerMaxDemand,
+	} {
+		res = append(res, p.snip32u(op, 10))
+	}
+
+	// total demand is read signed, like the total energy
+	for _, op := range []Measurement{
+		PowerDemandL1, PowerDemandL2, PowerDemandL3, PowerDemand,
+		ReactivePowerDemandL1, ReactivePowerDemandL2, ReactivePowerDemandL3, ReactivePowerDemand,
+		PowerMaxDemandL1, PowerMaxDemandL2, PowerMaxDemandL3, PowerMaxDemand,
+		ReactivePowerMaxDemandL1, ReactivePowerMaxDemandL2, ReactivePowerMaxDemandL3, ReactivePowerMaxDemand,
+	} {
+		res = append(res, p.snip32s(op, 10))
 	}
 
 	for _, op := range []Measurement{

@@ -1,7 +1,10 @@
 package rs485
 
 import (
+	"errors"
 	"fmt"
+	"log"
+	"sort"
 	"strings"
 	"time"
 
@@ -14,32 +17,81 @@ const (
 	ReadInputReg   = 4
 )
 
+// maxOpFailures is the number of consecutive reads a device may reject for an
+// operation before the operation is no longer read
+const maxOpFailures = 3
+
 // RS485 implements meters.Device
 type RS485 struct {
 	typ      string
+	id       string
 	producer Producer
-	ops      chan Operation
-	inflight Operation
+	plan     []block // bus reads of one query run, nil if it needs to be (re)built
+	next     int     // index of the next block in plan
+	failures map[opKey]int
+	disabled map[opKey]bool // operations the device does not support
+	single   map[opKey]bool // operations from rejected blocks, read on their own
+}
+
+// opKey identifies an operation independent of its transform
+type opKey struct {
+	funcCode uint8
+	opCode   uint16
+	iec      meters.Measurement
+}
+
+func keyOf(op Operation) opKey {
+	return opKey{funcCode: op.FuncCode, opCode: op.OpCode, iec: op.IEC61850}
+}
+
+// block is a single bus read covering one or more operations
+type block struct {
+	funcCode uint8
+	start    uint16
+	length   uint16
+	ops      []Operation
+}
+
+func (b block) String() string {
+	return fmt.Sprintf("%s registers 0x%04X-0x%04X", registerType(b.funcCode), b.start, uint32(b.start)+uint32(b.length)-1)
 }
 
 // NewDevice creates a device who's type must exist in the producer registry
 func NewDevice(typ string) (*RS485, error) {
 	for t, factory := range Producers {
 		if strings.EqualFold(t, typ) {
-			device := &RS485{
-				typ:      typ,
-				producer: factory(),
-			}
-			return device, nil
+			return newDevice(typ, factory()), nil
 		}
 	}
 
 	return nil, fmt.Errorf("unknown meter type: %s", typ)
 }
 
+func newDevice(typ string, producer Producer) *RS485 {
+	return &RS485{
+		typ:      typ,
+		producer: producer,
+		failures: make(map[opKey]int),
+		disabled: make(map[opKey]bool),
+		single:   make(map[opKey]bool),
+	}
+}
+
 // Initialize prepares the device for usage. Any setup or initialization should be done here.
 func (d *RS485) Initialize(client modbus.Client) error {
 	return nil
+}
+
+// SetID sets the device id used in log messages
+func (d *RS485) SetID(id string) {
+	d.id = id
+}
+
+func (d *RS485) name() string {
+	if d.id != "" {
+		return d.id
+	}
+	return d.typ
 }
 
 // Producer returns the underlying producer. The producer can be used to understand which operations the device supports.
@@ -76,77 +128,232 @@ func (d *RS485) Probe(client modbus.Client) (res meters.MeasurementResult, err e
 
 // QueryOp executes a single query operation on the bus
 func (d *RS485) QueryOp(client modbus.Client, op Operation) (res meters.MeasurementResult, err error) {
+	results, err := d.queryBlock(client, block{
+		funcCode: op.FuncCode,
+		start:    op.OpCode,
+		length:   op.ReadLen,
+		ops:      []Operation{op},
+	})
+	if err != nil {
+		return res, err
+	}
+
+	return results[0], nil
+}
+
+// queryBlock reads a block of registers in a single request and converts it to
+// the block's measurements
+func (d *RS485) queryBlock(client modbus.Client, b block) (res []meters.MeasurementResult, err error) {
+	for _, op := range b.ops {
+		if op.ReadLen == 0 {
+			return res, fmt.Errorf("invalid meter operation %v", op)
+		}
+
+		if op.Transform == nil {
+			return res, fmt.Errorf("transformation not defined: %v", op)
+		}
+	}
+
 	var bytes []byte
 
-	if op.ReadLen == 0 {
-		return res, fmt.Errorf("invalid meter operation %v", op)
-	}
-
-	if op.Transform == nil {
-		return res, fmt.Errorf("transformation not defined: %v", op)
-	}
-
-	switch op.FuncCode {
+	switch b.funcCode {
 	case ReadHoldingReg:
-		bytes, err = client.ReadHoldingRegisters(op.OpCode, op.ReadLen)
+		bytes, err = client.ReadHoldingRegisters(b.start, b.length)
 	case ReadInputReg:
-		bytes, err = client.ReadInputRegisters(op.OpCode, op.ReadLen)
+		bytes, err = client.ReadInputRegisters(b.start, b.length)
 	default:
-		return res, fmt.Errorf("unknown function code %d", op.FuncCode)
+		return res, fmt.Errorf("unknown function code %d", b.funcCode)
 	}
 
 	if err != nil {
-		return res, fmt.Errorf("read failed: %v", err)
+		return res, fmt.Errorf("read failed: %w", err)
 	}
 
-	res = meters.MeasurementResult{
-		Measurement: op.IEC61850,
-		Value:       op.Transform(bytes),
-		Timestamp:   time.Now(),
+	if len(bytes) < 2*int(b.length) {
+		return res, fmt.Errorf("read failed: expected %d bytes, got %d", 2*int(b.length), len(bytes))
+	}
+
+	now := time.Now()
+	for _, op := range b.ops {
+		offset := 2 * int(op.OpCode-b.start)
+		res = append(res, meters.MeasurementResult{
+			Measurement: op.IEC61850,
+			Value:       op.Transform(bytes[offset : offset+2*int(op.ReadLen)]),
+			Timestamp:   now,
+		})
 	}
 
 	return res, nil
+}
+
+// buildPlan groups the producer's operations into bus reads. Producers that
+// implement BlockProducer get adjacent operations combined into one read,
+// all others get one read per operation.
+func (d *RS485) buildPlan() []block {
+	var maxLen, maxGap uint16
+	if bp, ok := d.producer.(BlockProducer); ok {
+		maxLen, maxGap = bp.MaxBlockLen(), bp.MaxBlockGap()
+	}
+
+	var plan []block
+	var funcCodes []uint8
+	grouped := make(map[uint8][]Operation)
+
+	for _, op := range d.producer.Produce() {
+		key := keyOf(op)
+		if d.disabled[key] {
+			continue
+		}
+
+		if maxLen == 0 || d.single[key] || op.ReadLen >= maxLen {
+			plan = append(plan, block{funcCode: op.FuncCode, start: op.OpCode, length: op.ReadLen, ops: []Operation{op}})
+			continue
+		}
+
+		if _, ok := grouped[op.FuncCode]; !ok {
+			funcCodes = append(funcCodes, op.FuncCode)
+		}
+		grouped[op.FuncCode] = append(grouped[op.FuncCode], op)
+	}
+
+	for _, funcCode := range funcCodes {
+		ops := grouped[funcCode]
+		sort.SliceStable(ops, func(i, j int) bool { return ops[i].OpCode < ops[j].OpCode })
+
+		var cur *block
+		for _, op := range ops {
+			start, end := uint32(op.OpCode), uint32(op.OpCode)+uint32(op.ReadLen)
+
+			if cur != nil {
+				curStart, curEnd := uint32(cur.start), uint32(cur.start)+uint32(cur.length)
+
+				if start <= curEnd+uint32(maxGap) && max(end, curEnd)-curStart <= uint32(maxLen) {
+					cur.length = uint16(max(end, curEnd) - curStart)
+					cur.ops = append(cur.ops, op)
+					continue
+				}
+
+				plan = append(plan, *cur)
+			}
+
+			cur = &block{funcCode: funcCode, start: op.OpCode, length: op.ReadLen, ops: []Operation{op}}
+		}
+
+		if cur != nil {
+			plan = append(plan, *cur)
+		}
+	}
+
+	return plan
 }
 
 // Query is called by the handler after preparing the bus by setting the device id and waiting for rate limit
 func (d *RS485) Query(client modbus.Client) (res []meters.MeasurementResult, err error) {
 	res = make([]meters.MeasurementResult, 0)
 
-	if d.ops == nil {
-		d.ops = make(chan Operation)
-
-		// ringbuffer of device operations
-		go func(d *RS485) {
-			for {
-				for _, op := range d.producer.Produce() {
-					d.ops <- op
-				}
-			}
-		}(d)
+	if d.plan == nil {
+		d.plan = d.buildPlan()
+		d.next = 0
 	}
 
-	// Query loop will try to read all operations in a single run. It will
-	// always start with the current inflight operation. If an error is encountered,
-	// the partial results are returned. The loop is terminated after as many
-	// operations have been executed as the producer provides in a single run.
-	// In case of a flakey connection this guarantees that all registers are
-	// read at an equal rate.
-	for range d.producer.Produce() {
-		// get next inflight
-		if d.inflight.FuncCode == 0 {
-			d.inflight = <-d.ops
-		}
+	if len(d.plan) == 0 {
+		return res, errors.New("device rejected all registers")
+	}
 
-		m, err := d.QueryOp(client, d.inflight)
+	// Query loop will try to read all blocks in a single run. It will always
+	// start with the block that was not completed in the previous run. If an
+	// error is encountered, the partial results are returned. The loop is
+	// terminated after every block has been read once. In case of a flakey
+	// connection this guarantees that all registers are read at an equal rate.
+	//
+	// If the device rejects a block, its operations are read on their own from
+	// the next run on. If the device rejects an operation read on its own, e.g.
+	// because it does not support the register, the operation is skipped and
+	// the remaining operations are read. After maxOpFailures consecutive
+	// rejections the operation is no longer read.
+	plan := d.plan
+	for range plan {
+		if d.next >= len(plan) {
+			d.next = 0
+		}
+		b := plan[d.next]
+
+		m, err := d.queryBlock(client, b)
 		if err != nil {
-			return res, err
+			if !isRejected(err) {
+				return res, err
+			}
+
+			d.reject(b, err)
+			d.next++
+			continue
 		}
 
-		// mark inflight operation as completed
-		d.inflight.FuncCode = 0
+		for _, op := range b.ops {
+			delete(d.failures, keyOf(op))
+		}
 
-		res = append(res, m)
+		d.next++
+		res = append(res, m...)
 	}
 
 	return res, nil
+}
+
+// reject handles a block the device rejected. A block with several operations
+// is split so that its operations are read on their own. A single operation is
+// disabled after maxOpFailures consecutive rejections.
+func (d *RS485) reject(b block, err error) {
+	if len(b.ops) > 1 {
+		for _, op := range b.ops {
+			d.single[keyOf(op)] = true
+		}
+		d.plan = nil
+		log.Printf("device %s: reading %s was rejected, reading its %d values one at a time: %v", d.name(), b, len(b.ops), err)
+		return
+	}
+
+	op := b.ops[0]
+	key := keyOf(op)
+	d.failures[key]++
+
+	if d.failures[key] < maxOpFailures {
+		log.Printf("device %s: reading %s failed (%d/%d): %v", d.name(), describeOp(op), d.failures[key], maxOpFailures, err)
+		return
+	}
+
+	delete(d.failures, key)
+	d.disabled[key] = true
+	d.plan = nil
+	log.Printf("device %s: %s is not supported, no longer reading it until restart: %v", d.name(), describeOp(op), err)
+}
+
+func registerType(funcCode uint8) string {
+	if funcCode == ReadInputReg {
+		return "input"
+	}
+	return "holding"
+}
+
+func describeOp(op Operation) string {
+	return fmt.Sprintf("%s (%s register 0x%04X)", op.IEC61850, registerType(op.FuncCode), op.OpCode)
+}
+
+// isRejected returns true if the device answered with an exception saying it
+// cannot serve the request. Timeouts and transient exceptions like a busy
+// device are not rejections.
+func isRejected(err error) bool {
+	var mbErr *modbus.Error
+	if !errors.As(err, &mbErr) {
+		return false
+	}
+
+	switch mbErr.ExceptionCode {
+	case modbus.ExceptionCodeIllegalFunction,
+		modbus.ExceptionCodeIllegalDataAddress,
+		modbus.ExceptionCodeIllegalDataValue:
+		return true
+	default:
+		return false
+	}
 }
