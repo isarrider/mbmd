@@ -85,6 +85,44 @@
 						<td class="col-3" v-if="pop(m.DCPower)">${ m.DCPower }</td>
 						<td class="col-3" v-else>&mdash;</td>
 					</tr>
+					<tr class="d-flex" v-if="pop(m.DCEnergyS1, m.DCEnergyS2, m.DCEnergyS3)">
+						<td class="col-3">DC Generation (kWh)</td>
+						<td class="col-2" v-if="pop(m.DCEnergyS1)">${ m.DCEnergyS1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.DCEnergyS2)">${ m.DCEnergyS2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.DCEnergyS3)">${ m.DCEnergyS3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3">&mdash;</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.DCVoltageS4)">
+						<td class="col-3">String 4 Voltage (V)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.DCVoltageS4 }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.DCCurrentS4)">
+						<td class="col-3">String 4 Current (A)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.DCCurrentS4 }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.DCPowerS4)">
+						<td class="col-3">String 4 Power (W)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.DCPowerS4 }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.DCEnergyS4)">
+						<td class="col-3">String 4 Generation (kWh)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.DCEnergyS4 }</td>
+					</tr>
 					<tr class="d-flex" v-if="pop(m.ChargeState)">
 						<td class="col-3">Charge State (%)</td>
 						<td class="col-2">&mdash;</td>
@@ -99,7 +137,7 @@
 						<td class="col-2">&mdash;</td>
 						<td class="col-3">${ m.BatteryVoltage }</td>
 					</tr>
-					<tr class="d-flex" v-if="pop(m.VoltageL1, m.VoltageL2, m.VoltageL3, m.Voltage)">
+					<tr class="d-flex" v-if="pop(m.VoltageL1, m.VoltageL2, m.VoltageL3, m.Voltage, m.VoltageL_N_avg)">
 						<td class="col-3">Voltage (V)</td>
 						<td class="col-2" v-if="pop(m.VoltageL1)">${ m.VoltageL1 }</td>
 						<td class="col-2" v-else>&mdash;</td>
@@ -108,6 +146,19 @@
 						<td class="col-2" v-if="pop(m.VoltageL3)">${ m.VoltageL3 }</td>
 						<td class="col-2" v-else>&mdash;</td>
 						<td class="col-3" v-if="pop(m.Voltage)">${ m.Voltage }</td>
+						<td class="col-3" v-else-if="pop(m.VoltageL_N_avg)">${ m.VoltageL_N_avg }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.VoltageL1_L2, m.VoltageL2_L3, m.VoltageL3_L1, m.VoltageL_L_avg)">
+						<td class="col-3">Line Voltage L1-L2, L2-L3, L3-L1 (V)</td>
+						<td class="col-2" v-if="pop(m.VoltageL1_L2)">${ m.VoltageL1_L2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.VoltageL2_L3)">${ m.VoltageL2_L3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.VoltageL3_L1)">${ m.VoltageL3_L1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.VoltageL_L_avg)">${ m.VoltageL_L_avg }</td>
 						<td class="col-3" v-else>&mdash;</td>
 					</tr>
 					<tr class="d-flex" v-if="pop(m.CurrentL1, m.CurrentL2, m.CurrentL3, m.Current)">
@@ -120,6 +171,20 @@
 						<td class="col-2" v-else>&mdash;</td>
 						<td class="col-3" v-if="pop(m.Current)">${ m.Current }</td>
 						<td class="col-3" v-else>${ (val(m.CurrentL1) + val(m.CurrentL2) + val(m.CurrentL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.CurrentN)">
+						<td class="col-3">Neutral Current (A)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.CurrentN }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.ThreePhase_Vec_A)">
+						<td class="col-3">Three-phase Vector Current (A)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.ThreePhase_Vec_A }</td>
 					</tr>
 					<tr class="d-flex" v-if="pop(m.PowerL1, m.PowerL2, m.PowerL3, m.Power)">
 						<td class="col-3">Power (W)</td>
@@ -365,12 +430,16 @@
 						<td class="col-2">&mdash;</td>
 						<td class="col-3">${ m.PhaseAngle }</td>
 					</tr>
-					<tr class="d-flex" v-if="pop(m.Frequency)">
+					<tr class="d-flex" v-if="pop(m.FrequencyL1, m.FrequencyL2, m.FrequencyL3, m.Frequency)">
 						<td class="col-3">Frequency (Hz)</td>
-						<td class="col-2">&mdash;</td>
-						<td class="col-2">&mdash;</td>
-						<td class="col-2">&mdash;</td>
-						<td class="col-3">${ m.Frequency }</td>
+						<td class="col-2" v-if="pop(m.FrequencyL1)">${ m.FrequencyL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.FrequencyL2)">${ m.FrequencyL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.FrequencyL3)">${ m.FrequencyL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.Frequency)">${ m.Frequency }</td>
+						<td class="col-3" v-else>&mdash;</td>
 					</tr>
 					<tr class="d-flex" v-if="pop(m.HeatSinkTemp)">
 						<td class="col-3">Heatsink Temperature (°C)</td>
@@ -378,6 +447,13 @@
 						<td class="col-2">&mdash;</td>
 						<td class="col-2">&mdash;</td>
 						<td class="col-3">${ m.HeatSinkTemp }</td>
+					</tr>
+					<tr class="d-flex" v-if="pop(m.CabinetTemp)">
+						<td class="col-3">Cabinet Temperature (°C)</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-2">&mdash;</td>
+						<td class="col-3">${ m.CabinetTemp }</td>
 					</tr>
 				</tbody>
 			</table>
