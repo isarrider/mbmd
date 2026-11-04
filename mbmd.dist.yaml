@@ -18,7 +18,9 @@ influx:
   measurement: mbmd
   user:
   password:
-  buffer: 0 # 1h would keep unsent data in memory while influx is down for 1h (also e.g. 30m), 0 keeps the client default of ~10s
+  # how long readings are kept in memory and retried while the database is unavailable (e.g. 1h),
+  # 0 keeps the client default of 5 retries within 3 minutes, which holds about 10 seconds of data
+  buffer: 0
 
 # influxdb_v2 config
 influx:
@@ -27,7 +29,8 @@ influx:
   measurement: mbmd
   organization:
   token:
-  buffer: 0 # 1h would keep unsent data in memory while influx is down for 1h (also e.g. 30m), 0 keeps the client default of ~10s
+  # see influxdb_v1 config
+  buffer: 0
 
 # adapters are referenced by device
 adapters:
