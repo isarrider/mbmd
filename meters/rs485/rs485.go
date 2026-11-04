@@ -6,6 +6,7 @@ import (
 	"log"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/grid-x/modbus"
@@ -29,8 +30,11 @@ type RS485 struct {
 	plan     []block // bus reads of one query run, nil if it needs to be (re)built
 	next     int     // index of the next block in plan
 	failures map[opKey]int
-	disabled map[opKey]bool // operations the device does not support
-	single   map[opKey]bool // operations from rejected blocks, read on their own
+	disabled map[opKey]bool      // operations the device does not support
+	single   map[opKey]bool      // operations from rejected blocks, read on their own
+	identity []IdentityOperation // identity operations not read yet, nil before the first query
+	mu       sync.Mutex          // guards details, which Descriptor reads from other goroutines
+	details  meters.DeviceDescriptor
 }
 
 // opKey identifies an operation independent of its transform
@@ -102,11 +106,86 @@ func (d *RS485) Producer() Producer {
 // Descriptor returns the device descriptor. Since this method does not have bus access the descriptor should be
 // prepared during initialization.
 func (d *RS485) Descriptor() meters.DeviceDescriptor {
-	return meters.DeviceDescriptor{
+	d.mu.Lock()
+	defer d.mu.Unlock()
+
+	desc := meters.DeviceDescriptor{
 		Type:         d.typ,
 		Manufacturer: d.typ,
 		Model:        d.producer.Description(),
+		Version:      d.details.Version,
+		Serial:       d.details.Serial,
 	}
+
+	if d.details.Model != "" {
+		desc.Model = d.details.Model
+	}
+
+	return desc
+}
+
+// identify reads the device details of an IdentityProducer. Operations that
+// succeed or that the device rejects are not read again, operations that fail
+// for other reasons are retried on the next query.
+func (d *RS485) identify(client modbus.Client) {
+	if d.identity == nil {
+		ip, ok := d.producer.(IdentityProducer)
+		if !ok {
+			d.identity = []IdentityOperation{}
+			return
+		}
+		d.identity = ip.Identity()
+	}
+
+	if len(d.identity) == 0 {
+		return
+	}
+
+	// not nil, nil means the identity operations have not been fetched yet
+	pending := []IdentityOperation{}
+	for _, op := range d.identity {
+		b, err := readRegisters(client, op.FuncCode, op.OpCode, op.ReadLen)
+		if err != nil {
+			if isRejected(err) {
+				log.Printf("device %s: device details at %s register 0x%04X are not supported: %v", d.name(), registerType(op.FuncCode), op.OpCode, err)
+			} else {
+				pending = append(pending, op)
+			}
+			continue
+		}
+
+		d.mu.Lock()
+		op.Apply(b, &d.details)
+		d.mu.Unlock()
+	}
+	d.identity = pending
+
+	if len(pending) == 0 && (d.details.Serial != "" || d.details.Version != "") {
+		desc := d.Descriptor()
+		log.Printf("device %s: %s, serial %s, version %s", d.name(), desc.Model, desc.Serial, desc.Version)
+	}
+}
+
+// readRegisters reads length registers and checks the response size
+func readRegisters(client modbus.Client, funcCode uint8, start, length uint16) (b []byte, err error) {
+	switch funcCode {
+	case ReadHoldingReg:
+		b, err = client.ReadHoldingRegisters(start, length)
+	case ReadInputReg:
+		b, err = client.ReadInputRegisters(start, length)
+	default:
+		return nil, fmt.Errorf("unknown function code %d", funcCode)
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("read failed: %w", err)
+	}
+
+	if len(b) < 2*int(length) {
+		return nil, fmt.Errorf("read failed: expected %d bytes, got %d", 2*int(length), len(b))
+	}
+
+	return b, nil
 }
 
 // Probe is called by the handler after preparing the bus by setting the device id
@@ -154,23 +233,9 @@ func (d *RS485) queryBlock(client modbus.Client, b block) (res []meters.Measurem
 		}
 	}
 
-	var bytes []byte
-
-	switch b.funcCode {
-	case ReadHoldingReg:
-		bytes, err = client.ReadHoldingRegisters(b.start, b.length)
-	case ReadInputReg:
-		bytes, err = client.ReadInputRegisters(b.start, b.length)
-	default:
-		return res, fmt.Errorf("unknown function code %d", b.funcCode)
-	}
-
+	bytes, err := readRegisters(client, b.funcCode, b.start, b.length)
 	if err != nil {
-		return res, fmt.Errorf("read failed: %w", err)
-	}
-
-	if len(bytes) < 2*int(b.length) {
-		return res, fmt.Errorf("read failed: expected %d bytes, got %d", 2*int(b.length), len(bytes))
+		return res, err
 	}
 
 	now := time.Now()
@@ -250,6 +315,8 @@ func (d *RS485) buildPlan() []block {
 // Query is called by the handler after preparing the bus by setting the device id and waiting for rate limit
 func (d *RS485) Query(client modbus.Client) (res []meters.MeasurementResult, err error) {
 	res = make([]meters.MeasurementResult, 0)
+
+	d.identify(client)
 
 	if d.plan == nil {
 		d.plan = d.buildPlan()

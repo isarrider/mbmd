@@ -2,6 +2,7 @@ package rs485
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/grid-x/modbus"
@@ -290,4 +291,80 @@ func TestQueryRetriesBlockAfterTransientError(t *testing.T) {
 	assert.Len(t, res, 3)
 	assert.Equal(t, 1, client.reads[10])
 	assert.Empty(t, d.single)
+}
+
+// identityClient serves fixed responses by start address
+type identityClient struct {
+	testClient
+	data map[uint16][]byte
+}
+
+func (c *identityClient) ReadHoldingRegisters(address, quantity uint16) ([]byte, error) {
+	if b, ok := c.data[address]; ok {
+		c.reads[address]++
+		if err, ok := c.errors[address]; ok {
+			return nil, err
+		}
+		return b, nil
+	}
+	return c.testClient.ReadHoldingRegisters(address, quantity)
+}
+
+type testIdentityProducer struct {
+	testProducer
+}
+
+func (p *testIdentityProducer) Identity() []IdentityOperation {
+	return []IdentityOperation{
+		{FuncCode: ReadHoldingReg, OpCode: 0x1000, ReadLen: 1, Apply: func(b []byte, desc *DeviceDescriptor) {
+			desc.Serial = fmt.Sprintf("%X", b)
+		}},
+		{FuncCode: ReadHoldingReg, OpCode: 0x2000, ReadLen: 1, Apply: func(b []byte, desc *DeviceDescriptor) {
+			desc.Version = fmt.Sprintf("%X", b)
+		}},
+	}
+}
+
+func TestQueryReadsIdentityOnce(t *testing.T) {
+	d := newDevice("test", &testIdentityProducer{testProducer{ops: []Operation{newTestOp(VoltageL1, 1)}}})
+	client := &identityClient{
+		testClient: *newTestClient(map[uint16]error{0x2000: errors.New("serial: timeout")}),
+		data:       map[uint16][]byte{0x1000: {0x12, 0x34}, 0x2000: {0x03, 0x01}},
+	}
+
+	// the identity is read before the first query, a timeout does not fail the query
+	res, err := d.Query(client)
+	assert.NoError(t, err)
+	assert.Len(t, res, 1)
+	assert.Equal(t, "1234", d.Descriptor().Serial)
+	assert.Equal(t, "", d.Descriptor().Version)
+	assert.Equal(t, "test", d.Descriptor().Model)
+
+	// only the failed part is read again
+	delete(client.errors, 0x2000)
+	_, err = d.Query(client)
+	assert.NoError(t, err)
+	assert.Equal(t, "0301", d.Descriptor().Version)
+
+	_, err = d.Query(client)
+	assert.NoError(t, err)
+	assert.Equal(t, 1, client.reads[0x1000])
+	assert.Equal(t, 2, client.reads[0x2000])
+}
+
+func TestQueryIdentityRejected(t *testing.T) {
+	d := newDevice("test", &testIdentityProducer{testProducer{ops: []Operation{newTestOp(VoltageL1, 1)}}})
+	client := &identityClient{
+		testClient: *newTestClient(map[uint16]error{0x1000: rejected, 0x2000: rejected}),
+		data:       map[uint16][]byte{0x1000: {0x12, 0x34}, 0x2000: {0x03, 0x01}},
+	}
+
+	// a rejected identity is not read again and does not affect the query
+	for i := 0; i < 3; i++ {
+		res, err := d.Query(client)
+		assert.NoError(t, err)
+		assert.Len(t, res, 1)
+	}
+	assert.Equal(t, 1, client.reads[0x1000])
+	assert.Equal(t, "", d.Descriptor().Serial)
 }
