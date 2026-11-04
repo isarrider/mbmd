@@ -1,6 +1,11 @@
 package rs485
 
-import . "github.com/volkszaehler/mbmd/meters"
+import (
+	"fmt"
+
+	"github.com/volkszaehler/mbmd/encoding"
+	. "github.com/volkszaehler/mbmd/meters"
+)
 
 func init() {
 	Register("DS100", NewDS100Producer)
@@ -176,6 +181,42 @@ func NewDS100Producer() Producer {
 
 func (p *DS100Producer) Description() string {
 	return "B+G e-tech DS100"
+}
+
+// ds100Variants maps the firmware checksum to the model variant, from the
+// variant table in the manual (firmware V301)
+var ds100Variants = map[uint16]string{
+	0x708A: "DS100-009",
+	0x5B61: "DS100-00B",
+	0x6D95: "DS100-00B-R",
+	0x2B60: "DS100-30B",
+}
+
+// Identity implements IdentityProducer
+func (p *DS100Producer) Identity() []IdentityOperation {
+	return []IdentityOperation{
+		{
+			// serial number, 12 digits stored as hex nibbles, e.g. 20 24 05 27 00 01
+			FuncCode: ReadHoldingReg,
+			OpCode:   0x1000,
+			ReadLen:  3,
+			Apply: func(b []byte, desc *DeviceDescriptor) {
+				desc.Serial = fmt.Sprintf("%X", b[:6])
+			},
+		},
+		{
+			// software version, hardware version and firmware checksum
+			FuncCode: ReadHoldingReg,
+			OpCode:   0x1004,
+			ReadLen:  3,
+			Apply: func(b []byte, desc *DeviceDescriptor) {
+				desc.Version = fmt.Sprintf("V%d (hardware V%d)", encoding.Uint16(b[0:2]), encoding.Uint16(b[2:4]))
+				if variant, ok := ds100Variants[encoding.Uint16(b[4:6])]; ok {
+					desc.Model = "B+G e-tech " + variant
+				}
+			},
+		},
+	}
 }
 
 // MaxBlockLen implements BlockProducer. The manual allows reading up to 100 registers at once.

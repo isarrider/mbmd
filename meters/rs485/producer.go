@@ -41,6 +41,21 @@ type BlockProducer interface {
 	MaxBlockGap() uint16
 }
 
+// IdentityProducer is implemented by producers that can read device details
+// like the serial number or firmware version. They are read once, on the
+// first query of the device.
+type IdentityProducer interface {
+	Identity() []IdentityOperation
+}
+
+// IdentityOperation reads registers and applies them to the device descriptor
+type IdentityOperation struct {
+	FuncCode uint8
+	OpCode   uint16
+	ReadLen  uint16
+	Apply    func(b []byte, desc *meters.DeviceDescriptor)
+}
+
 // Opcodes map measurements to physical registers
 type Opcodes map[meters.Measurement]uint16
 
