@@ -29,6 +29,18 @@ type Producer interface {
 	Probe() Operation
 }
 
+// BlockProducer is implemented by producers whose devices can read several
+// consecutive registers in a single request. Operations are then combined into
+// blocks. If the device rejects a block, its operations are read on their own.
+type BlockProducer interface {
+	// MaxBlockLen returns the maximum number of registers read in one request
+	MaxBlockLen() uint16
+
+	// MaxBlockGap returns the maximum number of registers between two operations
+	// that are read and discarded to combine the operations into one request
+	MaxBlockGap() uint16
+}
+
 // Opcodes map measurements to physical registers
 type Opcodes map[meters.Measurement]uint16
 

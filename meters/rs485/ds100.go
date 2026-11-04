@@ -82,6 +82,17 @@ func (p *DS100Producer) Description() string {
 	return "B+G e-tech DS100"
 }
 
+// MaxBlockLen implements BlockProducer. The manual allows reading up to 100 registers at once.
+func (p *DS100Producer) MaxBlockLen() uint16 {
+	return 100
+}
+
+// MaxBlockGap implements BlockProducer. It bridges the T1-T4 tariff registers
+// between the energy totals, so each energy block is read in one request.
+func (p *DS100Producer) MaxBlockGap() uint16 {
+	return 8
+}
+
 func (p *DS100Producer) snip(iec Measurement, readlen uint16, transform RTUTransform, scaler ...float64) Operation {
 	snip := Operation{
 		FuncCode:  ReadHoldingReg,
