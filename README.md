@@ -23,6 +23,21 @@ This is [isarrider/mbmd](https://github.com/isarrider/mbmd), a fork of [volkszae
 
 To see the exact difference against upstream: [compare volkszaehler:master...isarrider:master](https://github.com/volkszaehler/mbmd/compare/master...isarrider:mbmd:master).
 
+### Feature branches
+
+These changes live on their own branches and are not in this fork's `master` yet. Each branch starts from upstream `master` or from the branch it needs, so it can be proposed upstream as is. Proposed in this order, a branch only goes up once the one it builds on is merged.
+
+| Branch | Builds on | Change |
+|---|---|---|
+| [`feat/rs485-skip-failing-ops`](https://github.com/isarrider/mbmd/tree/feat/rs485-skip-failing-ops) | upstream `master` | **A rejected register no longer takes the meter offline.** If a meter answers a read with an exception (illegal function, address or value), the register is skipped and the other values are still read. After three rejections in a row it is not read again until restart. Each rejection and the final decision are logged with the device id. Timeouts and a busy meter still take the meter offline as before. |
+| [`feat/rs485-block-reads`](https://github.com/isarrider/mbmd/tree/feat/rs485-block-reads) | `feat/rs485-skip-failing-ops` | **Block reads.** Meter types can declare how many registers they read in one request and how many unused registers may be read across a gap. Neighbouring values are then read together. If the meter rejects a block, its values are read one by one from then on, which is logged. The DS100 opts in with up to 100 registers per request and gaps of up to 8. |
+| [`feat/measurements-demand-quadrant-resettable`](https://github.com/isarrider/mbmd/tree/feat/measurements-demand-quadrant-resettable) | upstream `master` | **88 new generic measurements**, each in total and per phase: demand and maximum demand for import, export and total active (W) and reactive power (var), reactive energy per quadrant Q1–Q4 (kvarh), and resettable active and reactive energy counters. With rows in the web UI and tests for descriptions, names and MQTT topics. |
+| [`feat/ds100-all-values`](https://github.com/isarrider/mbmd/tree/feat/ds100-all-values) | `ds100` ([#411](https://github.com/volkszaehler/mbmd/pull/411)), `feat/rs485-block-reads`, `feat/measurements-demand-quadrant-resettable` | **The DS100 reads every measured value it has**: demand and maximum demand (`0x043A`–`0x0498`), reactive energy per quadrant and the resettable counters (`0x062C`–`0x065A`). That is 145 values in 7 requests, where `master` reads 57 values in 57 requests. |
+| [`feat/rs485-serial-version`](https://github.com/isarrider/mbmd/tree/feat/rs485-serial-version) | `feat/rs485-block-reads` | **Serial number and firmware version for RS485 meters**, shown in the UI, REST API and scan output. Read once on the first query; failures are logged and retried at most three times. The DS100 reads its serial (`0x1000`), software and hardware version, and identifies the model variant from the firmware checksum, e.g. "B+G e-tech DS100-00B". |
+| [`feat/ui-missing-rows`](https://github.com/isarrider/mbmd/tree/feat/ui-missing-rows) | upstream `master` | **The web UI shows every measurement.** 17 values had no row: per-phase frequency, line-to-line voltages and their average, the average L-N voltage, the three-phase vector current, the cabinet temperature, and inverter string energy and string 4. Adds a neutral current row too, and a test that fails if a measurement has no row. |
+
+All branches were built and tested together on top of `master`, including a run against a simulated DS100 with all 145 values in REST and the web UI. The registers have not been checked on a real meter yet.
+
 # Table of Contents
 
 * [Requirements](#requirements)
