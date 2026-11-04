@@ -182,6 +182,150 @@
 						<td class="col-3" v-else>${ (val(m.ExportPowerL1) + val(m.ExportPowerL2) +
 							val(m.ExportPowerL3)).toFixed(2) }</td>
 					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ImportPowerDemandL1, m.ImportPowerDemandL2, m.ImportPowerDemandL3, m.ImportPowerDemand)">
+						<td class="col-3">Import Power Demand (W)</td>
+						<td class="col-2" v-if="pop(m.ImportPowerDemandL1)">${ m.ImportPowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ImportPowerDemandL2)">${ m.ImportPowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ImportPowerDemandL3)">${ m.ImportPowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ImportPowerDemand)">${ m.ImportPowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ExportPowerDemandL1, m.ExportPowerDemandL2, m.ExportPowerDemandL3, m.ExportPowerDemand)">
+						<td class="col-3">Export Power Demand (W)</td>
+						<td class="col-2" v-if="pop(m.ExportPowerDemandL1)">${ m.ExportPowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ExportPowerDemandL2)">${ m.ExportPowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ExportPowerDemandL3)">${ m.ExportPowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ExportPowerDemand)">${ m.ExportPowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.PowerDemandL1, m.PowerDemandL2, m.PowerDemandL3, m.PowerDemand)">
+						<td class="col-3">Power Demand (W)</td>
+						<td class="col-2" v-if="pop(m.PowerDemandL1)">${ m.PowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.PowerDemandL2)">${ m.PowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.PowerDemandL3)">${ m.PowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.PowerDemand)">${ m.PowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveImportPowerDemandL1, m.ReactiveImportPowerDemandL2, m.ReactiveImportPowerDemandL3, m.ReactiveImportPowerDemand)">
+						<td class="col-3">Reactive Import Power Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerDemandL1)">${ m.ReactiveImportPowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerDemandL2)">${ m.ReactiveImportPowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerDemandL3)">${ m.ReactiveImportPowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveImportPowerDemand)">${ m.ReactiveImportPowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveExportPowerDemandL1, m.ReactiveExportPowerDemandL2, m.ReactiveExportPowerDemandL3, m.ReactiveExportPowerDemand)">
+						<td class="col-3">Reactive Export Power Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerDemandL1)">${ m.ReactiveExportPowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerDemandL2)">${ m.ReactiveExportPowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerDemandL3)">${ m.ReactiveExportPowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveExportPowerDemand)">${ m.ReactiveExportPowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactivePowerDemandL1, m.ReactivePowerDemandL2, m.ReactivePowerDemandL3, m.ReactivePowerDemand)">
+						<td class="col-3">Reactive Power Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerDemandL1)">${ m.ReactivePowerDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerDemandL2)">${ m.ReactivePowerDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerDemandL3)">${ m.ReactivePowerDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactivePowerDemand)">${ m.ReactivePowerDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ImportPowerMaxDemandL1, m.ImportPowerMaxDemandL2, m.ImportPowerMaxDemandL3, m.ImportPowerMaxDemand)">
+						<td class="col-3">Import Power Maximum Demand (W)</td>
+						<td class="col-2" v-if="pop(m.ImportPowerMaxDemandL1)">${ m.ImportPowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ImportPowerMaxDemandL2)">${ m.ImportPowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ImportPowerMaxDemandL3)">${ m.ImportPowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ImportPowerMaxDemand)">${ m.ImportPowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ExportPowerMaxDemandL1, m.ExportPowerMaxDemandL2, m.ExportPowerMaxDemandL3, m.ExportPowerMaxDemand)">
+						<td class="col-3">Export Power Maximum Demand (W)</td>
+						<td class="col-2" v-if="pop(m.ExportPowerMaxDemandL1)">${ m.ExportPowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ExportPowerMaxDemandL2)">${ m.ExportPowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ExportPowerMaxDemandL3)">${ m.ExportPowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ExportPowerMaxDemand)">${ m.ExportPowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.PowerMaxDemandL1, m.PowerMaxDemandL2, m.PowerMaxDemandL3, m.PowerMaxDemand)">
+						<td class="col-3">Power Maximum Demand (W)</td>
+						<td class="col-2" v-if="pop(m.PowerMaxDemandL1)">${ m.PowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.PowerMaxDemandL2)">${ m.PowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.PowerMaxDemandL3)">${ m.PowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.PowerMaxDemand)">${ m.PowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveImportPowerMaxDemandL1, m.ReactiveImportPowerMaxDemandL2, m.ReactiveImportPowerMaxDemandL3, m.ReactiveImportPowerMaxDemand)">
+						<td class="col-3">Reactive Import Power Maximum Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerMaxDemandL1)">${ m.ReactiveImportPowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerMaxDemandL2)">${ m.ReactiveImportPowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveImportPowerMaxDemandL3)">${ m.ReactiveImportPowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveImportPowerMaxDemand)">${ m.ReactiveImportPowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveExportPowerMaxDemandL1, m.ReactiveExportPowerMaxDemandL2, m.ReactiveExportPowerMaxDemandL3, m.ReactiveExportPowerMaxDemand)">
+						<td class="col-3">Reactive Export Power Maximum Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerMaxDemandL1)">${ m.ReactiveExportPowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerMaxDemandL2)">${ m.ReactiveExportPowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveExportPowerMaxDemandL3)">${ m.ReactiveExportPowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveExportPowerMaxDemand)">${ m.ReactiveExportPowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactivePowerMaxDemandL1, m.ReactivePowerMaxDemandL2, m.ReactivePowerMaxDemandL3, m.ReactivePowerMaxDemand)">
+						<td class="col-3">Reactive Power Maximum Demand (var)</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerMaxDemandL1)">${ m.ReactivePowerMaxDemandL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerMaxDemandL2)">${ m.ReactivePowerMaxDemandL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactivePowerMaxDemandL3)">${ m.ReactivePowerMaxDemandL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactivePowerMaxDemand)">${ m.ReactivePowerMaxDemand }</td>
+						<td class="col-3" v-else>&mdash;</td>
+					</tr>
 					<tr class="d-flex" v-if="pop(m.SumL1, m.SumL2, m.SumL3, m.Sum)">
 						<td class="col-3">Sum (kWh)</td>
 						<td class="col-2" v-if="pop(m.SumL1)">${ m.SumL1 }</td>
@@ -335,6 +479,136 @@
 						<td class="col-2">&mdash;</td>
 						<td class="col-2">&mdash;</td>
 						<td class="col-3">${ m.ReactiveExportT2 }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveQ1L1, m.ReactiveQ1L2, m.ReactiveQ1L3, m.ReactiveQ1)">
+						<td class="col-3">Q1 Reactive (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ1L1)">${ m.ReactiveQ1L1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ1L2)">${ m.ReactiveQ1L2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ1L3)">${ m.ReactiveQ1L3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveQ1)">${ m.ReactiveQ1 }</td>
+						<td class="col-3" v-else>${ (val(m.ReactiveQ1L1) + val(m.ReactiveQ1L2) +
+							val(m.ReactiveQ1L3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveQ2L1, m.ReactiveQ2L2, m.ReactiveQ2L3, m.ReactiveQ2)">
+						<td class="col-3">Q2 Reactive (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ2L1)">${ m.ReactiveQ2L1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ2L2)">${ m.ReactiveQ2L2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ2L3)">${ m.ReactiveQ2L3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveQ2)">${ m.ReactiveQ2 }</td>
+						<td class="col-3" v-else>${ (val(m.ReactiveQ2L1) + val(m.ReactiveQ2L2) +
+							val(m.ReactiveQ2L3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveQ3L1, m.ReactiveQ3L2, m.ReactiveQ3L3, m.ReactiveQ3)">
+						<td class="col-3">Q3 Reactive (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ3L1)">${ m.ReactiveQ3L1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ3L2)">${ m.ReactiveQ3L2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ3L3)">${ m.ReactiveQ3L3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveQ3)">${ m.ReactiveQ3 }</td>
+						<td class="col-3" v-else>${ (val(m.ReactiveQ3L1) + val(m.ReactiveQ3L2) +
+							val(m.ReactiveQ3L3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ReactiveQ4L1, m.ReactiveQ4L2, m.ReactiveQ4L3, m.ReactiveQ4)">
+						<td class="col-3">Q4 Reactive (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ4L1)">${ m.ReactiveQ4L1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ4L2)">${ m.ReactiveQ4L2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ReactiveQ4L3)">${ m.ReactiveQ4L3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ReactiveQ4)">${ m.ReactiveQ4 }</td>
+						<td class="col-3" v-else>${ (val(m.ReactiveQ4L1) + val(m.ReactiveQ4L2) +
+							val(m.ReactiveQ4L3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableSumL1, m.ResettableSumL2, m.ResettableSumL3, m.ResettableSum)">
+						<td class="col-3">Resettable Sum (kWh)</td>
+						<td class="col-2" v-if="pop(m.ResettableSumL1)">${ m.ResettableSumL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableSumL2)">${ m.ResettableSumL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableSumL3)">${ m.ResettableSumL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableSum)">${ m.ResettableSum }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableSumL1) + val(m.ResettableSumL2) +
+							val(m.ResettableSumL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableImportL1, m.ResettableImportL2, m.ResettableImportL3, m.ResettableImport)">
+						<td class="col-3">Resettable Import (kWh)</td>
+						<td class="col-2" v-if="pop(m.ResettableImportL1)">${ m.ResettableImportL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableImportL2)">${ m.ResettableImportL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableImportL3)">${ m.ResettableImportL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableImport)">${ m.ResettableImport }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableImportL1) + val(m.ResettableImportL2) +
+							val(m.ResettableImportL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableExportL1, m.ResettableExportL2, m.ResettableExportL3, m.ResettableExport)">
+						<td class="col-3">Resettable Export (kWh)</td>
+						<td class="col-2" v-if="pop(m.ResettableExportL1)">${ m.ResettableExportL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableExportL2)">${ m.ResettableExportL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableExportL3)">${ m.ResettableExportL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableExport)">${ m.ResettableExport }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableExportL1) + val(m.ResettableExportL2) +
+							val(m.ResettableExportL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableReactiveSumL1, m.ResettableReactiveSumL2, m.ResettableReactiveSumL3, m.ResettableReactiveSum)">
+						<td class="col-3">Resettable Reactive Sum (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveSumL1)">${ m.ResettableReactiveSumL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveSumL2)">${ m.ResettableReactiveSumL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveSumL3)">${ m.ResettableReactiveSumL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableReactiveSum)">${ m.ResettableReactiveSum }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableReactiveSumL1) + val(m.ResettableReactiveSumL2) +
+							val(m.ResettableReactiveSumL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableReactiveImportL1, m.ResettableReactiveImportL2, m.ResettableReactiveImportL3, m.ResettableReactiveImport)">
+						<td class="col-3">Resettable Reactive Import (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveImportL1)">${ m.ResettableReactiveImportL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveImportL2)">${ m.ResettableReactiveImportL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveImportL3)">${ m.ResettableReactiveImportL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableReactiveImport)">${ m.ResettableReactiveImport }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableReactiveImportL1) + val(m.ResettableReactiveImportL2) +
+							val(m.ResettableReactiveImportL3)).toFixed(2) }</td>
+					</tr>
+					<tr class="d-flex"
+						v-if="pop(m.ResettableReactiveExportL1, m.ResettableReactiveExportL2, m.ResettableReactiveExportL3, m.ResettableReactiveExport)">
+						<td class="col-3">Resettable Reactive Export (kvarh)</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveExportL1)">${ m.ResettableReactiveExportL1 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveExportL2)">${ m.ResettableReactiveExportL2 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-2" v-if="pop(m.ResettableReactiveExportL3)">${ m.ResettableReactiveExportL3 }</td>
+						<td class="col-2" v-else>&mdash;</td>
+						<td class="col-3" v-if="pop(m.ResettableReactiveExport)">${ m.ResettableReactiveExport }</td>
+						<td class="col-3" v-else>${ (val(m.ResettableReactiveExportL1) + val(m.ResettableReactiveExportL2) +
+							val(m.ResettableReactiveExportL3)).toFixed(2) }</td>
 					</tr>
 					<tr class="d-flex" v-if="pop(m.CosphiL1, m.CosphiL2, m.CosphiL3, m.Cosphi)">
 						<td class="col-3">Power Factor (cos 𝜑)</td>
